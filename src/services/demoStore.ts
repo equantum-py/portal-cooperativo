@@ -1,4 +1,4 @@
-import { mockSociosList, Socio } from '../data/mockData';
+import { mockSociosList, Socio, Notificacion, PagoAdmin, SolicitudAdmin, mockPagosList, mockSolicitudesList } from '../data/mockData';
 
 const STORAGE_KEY = 'portal_cooperativo_socios';
 
@@ -117,5 +117,27 @@ export const demoStore = {
       });
     });
     return all.sort((a, b) => b.id - a.id);
+  },
+
+  getPagos: (): PagoAdmin[] => {
+    const data = localStorage.getItem('demoPagos');
+    if (data) return JSON.parse(data);
+    localStorage.setItem('demoPagos', JSON.stringify(mockPagosList));
+    return mockPagosList;
+  },
+
+  savePagos: (pagos: PagoAdmin[]) => {
+    localStorage.setItem('demoPagos', JSON.stringify(pagos));
+  },
+
+  getSolicitudes: (): SolicitudAdmin[] => {
+    const data = localStorage.getItem('demoSolicitudes');
+    if (data) return JSON.parse(data);
+    localStorage.setItem('demoSolicitudes', JSON.stringify(mockSolicitudesList));
+    return mockSolicitudesList;
+  },
+
+  saveSolicitudes: (solicitudes: SolicitudAdmin[]) => {
+    localStorage.setItem('demoSolicitudes', JSON.stringify(solicitudes));
   }
 };

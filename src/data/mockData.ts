@@ -31,6 +31,35 @@ export interface HistorialPrestamo {
   fechaPago?: string;
 }
 
+export interface PagoAdmin {
+  id: number;
+  socioId: string;
+  socioNombre: string;
+  cedula: string;
+  numeroSocio: string;
+  tipoPago: 'aporte' | 'cuota de préstamo' | 'ahorro' | 'otro';
+  monto: number;
+  estado: 'pagado' | 'pendiente' | 'vencido';
+  fechaVencimiento: string;
+  fechaPago?: string;
+  metodoPago: 'efectivo' | 'transferencia' | 'giro' | 'caja' | 'otro' | '-';
+  observacion?: string;
+}
+
+export interface SolicitudAdmin {
+  id: number;
+  nombre: string;
+  cedula: string;
+  telefono: string;
+  email: string;
+  ciudad: string;
+  tipo: 'nuevo socio' | 'préstamo express' | 'actualización de datos' | 'general';
+  mensaje: string;
+  estado: 'pendiente' | 'contactado' | 'aprobado' | 'rechazado';
+  fecha: string;
+  observacion?: string;
+}
+
 export interface Socio {
   id: string;
   nombre: string;
@@ -319,6 +348,28 @@ export const mockSociosList: Socio[] = [
 ];
 
 export const mockUser = mockSociosList[0];
+
+export const mockPagosList: PagoAdmin[] = [
+  { id: 1, socioId: "1", socioNombre: "Juan Pérez", cedula: "1234567", numeroSocio: "000245", tipoPago: "aporte", monto: 100000, estado: "pagado", fechaVencimiento: "10/07/2026", fechaPago: "05/07/2026", metodoPago: "transferencia" },
+  { id: 2, socioId: "1", socioNombre: "Juan Pérez", cedula: "1234567", numeroSocio: "000245", tipoPago: "cuota de préstamo", monto: 650000, estado: "pagado", fechaVencimiento: "10/07/2026", fechaPago: "05/07/2026", metodoPago: "transferencia" },
+  { id: 3, socioId: "2", socioNombre: "María González", cedula: "7654321", numeroSocio: "000246", tipoPago: "ahorro", monto: 500000, estado: "pagado", fechaVencimiento: "05/07/2026", fechaPago: "01/07/2026", metodoPago: "efectivo" },
+  { id: 4, socioId: "3", socioNombre: "Carlos Ayala", cedula: "4567890", numeroSocio: "000301", tipoPago: "cuota de préstamo", monto: 350000, estado: "vencido", fechaVencimiento: "10/05/2026", metodoPago: "-" },
+  { id: 5, socioId: "3", socioNombre: "Carlos Ayala", cedula: "4567890", numeroSocio: "000301", tipoPago: "aporte", monto: 100000, estado: "vencido", fechaVencimiento: "15/04/2026", metodoPago: "-" },
+  { id: 6, socioId: "4", socioNombre: "Laura Rojas", cedula: "2345678", numeroSocio: "000405", tipoPago: "cuota de préstamo", monto: 950000, estado: "pendiente", fechaVencimiento: "15/07/2026", metodoPago: "-" },
+  { id: 7, socioId: "5", socioNombre: "Roberto Ortiz", cedula: "5678901", numeroSocio: "000512", tipoPago: "aporte", monto: 100000, estado: "vencido", fechaVencimiento: "15/08/2025", metodoPago: "-" },
+  { id: 8, socioId: "6", socioNombre: "Ana Martínez", cedula: "6789012", numeroSocio: "000620", tipoPago: "cuota de préstamo", monto: 180000, estado: "pagado", fechaVencimiento: "05/07/2026", fechaPago: "02/07/2026", metodoPago: "giro" },
+  { id: 9, socioId: "7", socioNombre: "Diego Franco", cedula: "8901234", numeroSocio: "000755", tipoPago: "aporte", monto: 150000, estado: "pagado", fechaVencimiento: "15/06/2026", fechaPago: "10/06/2026", metodoPago: "transferencia" },
+  { id: 10, socioId: "7", socioNombre: "Diego Franco", cedula: "8901234", numeroSocio: "000755", tipoPago: "aporte", monto: 150000, estado: "pendiente", fechaVencimiento: "15/07/2026", metodoPago: "-" }
+];
+
+export const mockSolicitudesList: SolicitudAdmin[] = [
+  { id: 1, nombre: "Marcos Medina", cedula: "3451234", telefono: "0981 111 222", email: "marcos@ejemplo.com", ciudad: "Asunción", tipo: "nuevo socio", mensaje: "Deseo asociarme para acceder a créditos para mi pyme.", estado: "pendiente", fecha: "05/07/2026" },
+  { id: 2, nombre: "Lucía Paredes", cedula: "5672345", telefono: "0971 222 333", email: "lucia@ejemplo.com", ciudad: "San Lorenzo", tipo: "nuevo socio", mensaje: "Me gustaría ser socia e iniciar un ahorro programado.", estado: "contactado", fecha: "02/07/2026", observacion: "Se le enviaron los requisitos por WhatsApp." },
+  { id: 3, nombre: "Juan Pérez", cedula: "1234567", telefono: "0981 123 456", email: "juan.perez@ejemplo.com", ciudad: "Asunción", tipo: "préstamo express", mensaje: "Solicito préstamo express de Gs. 2.000.000.", estado: "pendiente", fecha: "06/07/2026" },
+  { id: 4, nombre: "Laura Rojas", cedula: "2345678", telefono: "0991 222 111", email: "laura.rojas@ejemplo.com", ciudad: "Lambaré", tipo: "préstamo express", mensaje: "Preciso un adelanto de salario de Gs. 1.000.000.", estado: "aprobado", fecha: "01/07/2026", observacion: "Aprobado, desembolso en proceso." },
+  { id: 5, nombre: "Ana Martínez", cedula: "6789012", telefono: "0972 888 999", email: "ana.martinez@ejemplo.com", ciudad: "Luque", tipo: "actualización de datos", mensaje: "Cambié de número de teléfono y de ciudad de residencia.", estado: "pendiente", fecha: "04/07/2026" },
+  { id: 6, nombre: "Pedro Alvarenga", cedula: "1122334", telefono: "0982 444 555", email: "pedro@ejemplo.com", ciudad: "Capiatá", tipo: "general", mensaje: "Consulta sobre los requisitos para caja de ahorro a plazo fijo.", estado: "rechazado", fecha: "25/06/2026", observacion: "No es socio ni cumple requisitos básicos." }
+];
 
 export const mockFlujoCajaMensual = [
   { mes: 'Enero', ingresosAportes: 115000000, ingresosPrestamos: 240000000, otrosIngresos: 5000000, egresos: 180000000, saldoNeto: 180000000 },
