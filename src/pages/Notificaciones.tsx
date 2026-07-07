@@ -54,20 +54,20 @@ const Notificaciones: React.FC = () => {
 
             if (notif.tipo === 'warning') { 
               icon = 'fa-triangle-exclamation'; 
-              iconColor = '#f59e0b'; 
-              bgLight = 'rgba(245, 158, 11, 0.1)';
+              iconColor = 'var(--color-warning)'; 
+              bgLight = '#FEF0C7';
             } else if (notif.tipo === 'danger') { 
               icon = 'fa-circle-xmark'; 
-              iconColor = '#ef4444'; 
-              bgLight = 'rgba(239, 68, 68, 0.1)';
+              iconColor = 'var(--color-danger)'; 
+              bgLight = '#FEE4E2';
             } else if (notif.tipo === 'success') { 
               icon = 'fa-circle-check'; 
-              iconColor = '#10b981'; 
-              bgLight = 'rgba(16, 185, 129, 0.1)';
+              iconColor = 'var(--color-success)'; 
+              bgLight = '#D1FADF';
             } else { 
               icon = 'fa-bell'; 
-              iconColor = '#2563eb'; 
-              bgLight = 'rgba(37, 99, 235, 0.1)';
+              iconColor = 'var(--color-info)'; 
+              bgLight = '#E0F2FE';
             }
 
             return (
@@ -83,10 +83,10 @@ const Notificaciones: React.FC = () => {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
-                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{notif.titulo}</h4>
-                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', whiteSpace: 'nowrap', marginLeft: '0.5rem' }}>{notif.fecha}</span>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>{notif.titulo}</h4>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--color-text-light)', whiteSpace: 'nowrap', marginLeft: '0.5rem' }}>{notif.fecha}</span>
                     </div>
-                    <p style={{ margin: 0, color: '#64748b', fontSize: '0.9rem', lineHeight: 1.5 }}>
+                    <p style={{ margin: 0, color: 'var(--color-text-light)', fontSize: '0.9rem', lineHeight: 1.5 }}>
                       {notif.mensaje}
                     </p>
                   </div>

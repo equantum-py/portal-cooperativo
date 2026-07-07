@@ -38,7 +38,7 @@ const Ahorros: React.FC = () => {
       </SocioActionGrid>
 
       <div className="socio-section-title-wrapper">
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1rem', marginTop: '1rem' }}>
           Últimos Movimientos
         </h3>
       </div>

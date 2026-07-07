@@ -22,7 +22,7 @@ const Prestamos: React.FC = () => {
       <SocioHeroCard 
         label="Préstamo Vigente"
         value={formatCurrency(mockUser.prestamoConcedido)}
-        gradient={isAtrasado ? 'danger' : 'primary'}
+        gradient="primary"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
           <div>
@@ -36,13 +36,13 @@ const Prestamos: React.FC = () => {
         </div>
         <div style={{ marginTop: '1rem' }}>
           {isAtrasado ? (
-            <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.35rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
-              <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '0.5rem' }}></i>
-              {mockUser.cuotasVencidas} cuotas vencidas
+            <span style={{ backgroundColor: '#FEE4E2', color: 'var(--color-danger)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(217, 45, 32, 0.2)' }}>
+              <i className="fa-solid fa-circle-exclamation"></i>
+              {mockUser.cuotasVencidas} cuota{mockUser.cuotasVencidas !== 1 ? 's' : ''} vencida{mockUser.cuotasVencidas !== 1 ? 's' : ''}
             </span>
           ) : (
-            <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.35rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
-              <i className="fa-solid fa-check-circle" style={{ marginRight: '0.5rem' }}></i>
+            <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <i className="fa-solid fa-check-circle"></i>
               Crédito al Día
             </span>
           )}
@@ -66,7 +66,7 @@ const Prestamos: React.FC = () => {
       </SocioFinanceCard>
 
       <div className="socio-section-title-wrapper">
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1rem', marginTop: '1rem' }}>
           Historial de Cuotas
         </h3>
       </div>

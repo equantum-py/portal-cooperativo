@@ -12,7 +12,7 @@ const Perfil: React.FC = () => {
   return (
     <div className="socio-app-page">
       <div style={{ 
-        background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', 
+        background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-info) 100%)', 
         paddingBottom: '3rem',
         borderBottomLeftRadius: '32px',
         borderBottomRightRadius: '32px',
@@ -49,7 +49,7 @@ const Perfil: React.FC = () => {
         <SocioFinanceCard title="Seguridad y Contacto">
           <div className="socio-movement-list">
             <button className="socio-movement-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', padding: '1rem 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }} onClick={() => alert('En desarrollo')}>
-              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: 'rgba(37, 99, 235, 0.1)', color: '#2563eb' }}>
+              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: '#E0F2FE', color: 'var(--color-info)' }}>
                 <i className="fa-solid fa-user-pen"></i>
               </div>
               <div className="socio-movement-body">
@@ -60,7 +60,7 @@ const Perfil: React.FC = () => {
             </button>
             
             <button className="socio-movement-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', padding: '1rem 0' }} onClick={() => alert('En desarrollo')}>
-              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
+              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: '#D1FADF', color: 'var(--color-success)' }}>
                 <i className="fa-solid fa-headset"></i>
               </div>
               <div className="socio-movement-body">

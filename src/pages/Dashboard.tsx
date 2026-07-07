@@ -57,12 +57,12 @@ const Dashboard: React.FC = () => {
             <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem' }}>{data.fechaProximoVencimiento}</p>
           </div>
           {isAtrasado ? (
-            <span style={{ backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
-              <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '0.5rem' }}></i>
+            <span style={{ backgroundColor: '#FEE4E2', color: 'var(--color-danger)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(217, 45, 32, 0.2)' }}>
+              <i className="fa-solid fa-circle-exclamation"></i>
               Deuda Pendiente
             </span>
           ) : (
-            <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
+            <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               Al día
             </span>
           )}
@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
       <QuickActions />
 
       <div className="socio-section-title-wrapper">
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1rem', marginTop: '1rem' }}>
           Estado Financiero
         </h3>
       </div>
@@ -106,8 +106,8 @@ const Dashboard: React.FC = () => {
         </div>
       </SocioFinanceCard>
 
-      <div style={{ padding: '0 1.25rem' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+      <div className="socio-section-title-wrapper">
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1rem', marginTop: '1rem' }}>
           Información General
         </h3>
       </div>

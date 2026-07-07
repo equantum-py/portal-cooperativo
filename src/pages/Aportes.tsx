@@ -22,14 +22,14 @@ const Aportes: React.FC = () => {
       <SocioHeroCard 
         label="Aporte Mensual"
         value={formatCurrency(mockUser.aporteMensual)}
-        gradient={isAtrasado ? 'danger' : 'primary'}
+        gradient="primary"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
           <div>
             <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Estado Actual</p>
             {isAtrasado 
-              ? <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>Atrasado ({mockUser.aportesAtrasadosMeses} meses)</span>
-              : <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>Al Día</span>}
+              ? <span style={{ backgroundColor: '#FEE4E2', color: 'var(--color-danger)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(217, 45, 32, 0.2)' }}><i className="fa-solid fa-circle-exclamation"></i> Atrasado ({mockUser.aportesAtrasadosMeses} meses)</span>
+              : <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}><i className="fa-solid fa-check-circle"></i> Al Día</span>}
           </div>
           {isAtrasado && (
             <div style={{ textAlign: 'right' }}>
@@ -56,7 +56,7 @@ const Aportes: React.FC = () => {
       </SocioFinanceCard>
 
       <div className="socio-section-title-wrapper">
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1rem', marginTop: '1rem' }}>
           Historial de Movimientos
         </h3>
       </div>
