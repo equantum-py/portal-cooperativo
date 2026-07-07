@@ -4,7 +4,6 @@ import { authService } from '../services/authService';
 
 const Login: React.FC = () => {
   const [cedula, setCedula] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -32,19 +31,10 @@ const Login: React.FC = () => {
       setError('La cédula debe contener solo números.');
       return;
     }
-    if (!password.trim()) {
-      setError('Ingresá tu contraseña.');
-      return;
-    }
-
     try {
       setLoading(true);
-      const session = await authService.login(cedula.trim(), password.trim());
-      if (session.rol === 'admin') {
-        navigate('/dashboard/admin');
-      } else {
-        navigate('/dashboard');
-      }
+      const session = await authService.loginSocio(cedula.trim());
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {
@@ -80,25 +70,11 @@ const Login: React.FC = () => {
               onChange={(e) => setCedula(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label className="form-label">Contraseña o PIN</label>
-            <input 
-              type="password" 
-              className="form-control" 
-              placeholder="Ingresá tu clave"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
           <button type="submit" className="btn btn-primary mt-2" disabled={loading}>
             {loading ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
 
-        <div className="text-center mt-3">
-          <Link to="/forgot-password" style={{ fontSize: '0.9rem' }}>¿Olvidaste tu contraseña?</Link>
-        </div>
-        
         <div className="text-center mt-4">
           <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', marginBottom: '1rem' }} />
           <p className="text-muted mb-2">¿Aún no sos parte?</p>

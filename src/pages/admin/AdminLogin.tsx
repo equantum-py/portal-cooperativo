@@ -31,7 +31,7 @@ const AdminLogin: React.FC = () => {
     try {
       setLoading(true);
       // Reutilizamos el login actual, admin entra con 'admin'
-      const session = await authService.login(usuario.trim(), password.trim());
+      const session = await authService.loginAdmin(usuario.trim(), password.trim());
       if (session.rol === 'admin') {
         navigate('/dashboard/admin');
       } else {
