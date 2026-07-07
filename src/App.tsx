@@ -44,10 +44,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         
-        {/* Rutas Privadas (Socio y Admin) */}
-        <Route element={<ProtectedRoute allowedRoles={['socio', 'admin']} />}>
+        {/* Rutas exclusivas de Socio */}
+        <Route element={<ProtectedRoute allowedRoles={['socio']} />}>
           <Route path="/dashboard" element={<PrivateLayout />}>
-            {/* Rutas de Socio */}
             <Route index element={<Dashboard />} />
             <Route path="aportes" element={<Aportes />} />
             <Route path="prestamos" element={<Prestamos />} />
@@ -56,23 +55,25 @@ function App() {
             <Route path="express" element={<Express />} />
             <Route path="perfil" element={<Perfil />} />
             <Route path="notificaciones" element={<Notificaciones />} />
-            
-            {/* Rutas exclusivas de Admin */}
-            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-              <Route path="admin" element={<AdminDashboard />} />
-              <Route path="admin/socios" element={<AdminSocios />} />
-              <Route path="admin/aportes" element={<AdminAportes />} />
-              <Route path="admin/prestamos" element={<AdminPrestamos />} />
-              <Route path="admin/cuotas-vencidas" element={<AdminCuotasVencidas />} />
-              <Route path="admin/pagos" element={<AdminPagos />} />
-              <Route path="admin/flujo-caja" element={<AdminFlujoCaja />} />
-              <Route path="admin/ahorros" element={<AdminAhorros />} />
-              <Route path="admin/solicitudes" element={<AdminSolicitudes />} />
-              <Route path="admin/reportes" element={<AdminReportes />} />
-              <Route path="admin/notificaciones" element={<AdminNotificaciones />} />
-              <Route path="admin/importar-exportar" element={<AdminImportExport />} />
-              <Route path="admin/configuracion" element={<AdminConfiguracion />} />
-            </Route>
+          </Route>
+        </Route>
+
+        {/* Rutas exclusivas de Admin */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/dashboard/admin" element={<PrivateLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="socios" element={<AdminSocios />} />
+            <Route path="aportes" element={<AdminAportes />} />
+            <Route path="prestamos" element={<AdminPrestamos />} />
+            <Route path="cuotas-vencidas" element={<AdminCuotasVencidas />} />
+            <Route path="pagos" element={<AdminPagos />} />
+            <Route path="flujo-caja" element={<AdminFlujoCaja />} />
+            <Route path="ahorros" element={<AdminAhorros />} />
+            <Route path="solicitudes" element={<AdminSolicitudes />} />
+            <Route path="reportes" element={<AdminReportes />} />
+            <Route path="notificaciones" element={<AdminNotificaciones />} />
+            <Route path="importar-exportar" element={<AdminImportExport />} />
+            <Route path="configuracion" element={<AdminConfiguracion />} />
           </Route>
         </Route>
         

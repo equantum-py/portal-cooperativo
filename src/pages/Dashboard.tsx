@@ -11,9 +11,6 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const session = authService.getSession();
-  if (session?.rol === 'admin') {
-    return <Navigate to="/dashboard/admin" replace />;
-  }
 
   useEffect(() => {
     const fetchData = async () => {

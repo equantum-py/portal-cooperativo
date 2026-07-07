@@ -14,8 +14,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
   }
 
   if (allowedRoles && !allowedRoles.includes(session.rol)) {
-    // Si no tiene permisos, redirige al dashboard general o muestra un no-autorizado
-    return <Navigate to="/dashboard" replace />;
+    // Si no tiene permisos, redirige a su área correspondiente
+    if (session.rol === 'admin') {
+      return <Navigate to="/dashboard/admin" replace />;
+    } else {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return <Outlet />;
