@@ -75,5 +75,47 @@ export const demoStore = {
       }
     });
     demoStore.saveSocios(socios);
+  },
+
+  getAllAportes: () => {
+    const socios = demoStore.getSocios();
+    const all: any[] = [];
+    socios.forEach(s => {
+      s.historialAportes.forEach(a => {
+        all.push({ ...a, socioId: s.id, socioNombre: s.nombre, cedula: s.cedula, numeroSocio: s.numeroSocio });
+      });
+    });
+    return all.sort((a, b) => b.id - a.id);
+  },
+
+  getAllPrestamos: () => {
+    const socios = demoStore.getSocios();
+    const all: any[] = [];
+    socios.forEach(s => {
+      if (s.prestamoConcedido > 0) {
+        all.push({
+          socioId: s.id, socioNombre: s.nombre, cedula: s.cedula, 
+          montoOtorgado: s.prestamoConcedido, 
+          cuotas: s.cuotasPagadas + s.cuotasPendientes + s.cuotasVencidas,
+          cuotasPagadas: s.cuotasPagadas,
+          cuotasVencidas: s.cuotasVencidas,
+          proximoVencimiento: s.fechaProximoVencimiento,
+          estado: s.cuotasVencidas > 0 ? 'atrasado' : (s.cuotasPendientes > 0 ? 'activo' : 'cancelado'),
+          historial: s.historialPrestamos
+        });
+      }
+    });
+    return all;
+  },
+
+  getAllCuotasVencidas: () => {
+    const socios = demoStore.getSocios();
+    const all: any[] = [];
+    socios.forEach(s => {
+      s.historialPrestamos.filter(p => p.estado === 'vencido').forEach(p => {
+        all.push({ ...p, socioId: s.id, socioNombre: s.nombre, cedula: s.cedula, numeroSocio: s.numeroSocio });
+      });
+    });
+    return all.sort((a, b) => b.id - a.id);
   }
 };

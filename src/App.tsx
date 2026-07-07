@@ -17,6 +17,9 @@ import AdminFlujoCaja from './pages/admin/AdminFlujoCaja';
 import AdminReportes from './pages/admin/AdminReportes';
 import AdminImportExport from './pages/admin/AdminImportExport';
 import AdminNotificaciones from './pages/admin/AdminNotificaciones';
+import AdminAportes from './pages/admin/AdminAportes';
+import AdminPrestamos from './pages/admin/AdminPrestamos';
+import AdminCuotasVencidas from './pages/admin/AdminCuotasVencidas';
 import PlaceholderView from './pages/admin/PlaceholderView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
@@ -52,9 +55,9 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="admin/socios" element={<AdminSocios />} />
-              <Route path="admin/aportes" element={<PlaceholderView title="Aportes Mensuales" />} />
-              <Route path="admin/prestamos" element={<PlaceholderView title="Préstamos Otorgados" />} />
-              <Route path="admin/cuotas-vencidas" element={<PlaceholderView title="Cuotas Vencidas" />} />
+              <Route path="admin/aportes" element={<AdminAportes />} />
+              <Route path="admin/prestamos" element={<AdminPrestamos />} />
+              <Route path="admin/cuotas-vencidas" element={<AdminCuotasVencidas />} />
               <Route path="admin/pagos" element={<PlaceholderView title="Registro de Pagos" />} />
               <Route path="admin/flujo-caja" element={<AdminFlujoCaja />} />
               <Route path="admin/ahorros" element={<PlaceholderView title="Ahorros de Socios" />} />
