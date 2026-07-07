@@ -1,7 +1,7 @@
 import { appConfig } from '../config/appConfig';
 
 // Simula un retardo de red
-export const delay = (ms: number = appConfig.simularRetardoAPI) => 
+export const delay = (ms: number = appConfig.simularRetardoAPI) =>
   new Promise(resolve => setTimeout(resolve, ms));
 
 export interface UserSession {
@@ -14,9 +14,14 @@ export interface UserSession {
 export const authService = {
   async login(cedula: string, password: string): Promise<UserSession> {
     await delay();
-    
-    // Validación de prueba estática (en la vida real va al backend)
-    // Para simplificar, aceptamos cualquier contraseña con una cédula válida
+
+    // Por ahora el login es simulado.
+    // Usamos password para evitar error de TypeScript y dejar preparada la lógica futura.
+    if (!password.trim()) {
+      throw new Error('Ingresá tu contraseña');
+    }
+
+    // Validación de prueba estática. En producción esto irá al backend.
     if (cedula === '1234567') {
       const session: UserSession = {
         cedula,
@@ -24,6 +29,7 @@ export const authService = {
         token: 'fake-jwt-token-socio',
         rol: 'socio'
       };
+
       localStorage.setItem('userSession', JSON.stringify(session));
       return session;
     }
@@ -35,6 +41,7 @@ export const authService = {
         token: 'fake-jwt-token-admin',
         rol: 'admin'
       };
+
       localStorage.setItem('userSession', JSON.stringify(session));
       return session;
     }
@@ -49,13 +56,15 @@ export const authService = {
 
   getSession(): UserSession | null {
     const data = localStorage.getItem('userSession');
+
     if (data) {
       try {
         return JSON.parse(data) as UserSession;
-      } catch (e) {
+      } catch {
         return null;
       }
     }
+
     return null;
   },
 
