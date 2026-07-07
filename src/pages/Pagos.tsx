@@ -24,8 +24,8 @@ const Pagos: React.FC = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem', paddingBottom: '0.5rem' }}>
           <div>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Próximo Vencimiento</p>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem' }}>{mockUser.fechaProximoVencimiento}</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Próximo Vencimiento</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-text)' }}>{mockUser.fechaProximoVencimiento}</p>
           </div>
           {isAtrasado && (
             <span style={{ backgroundColor: '#FEE4E2', color: 'var(--color-danger)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(217, 45, 32, 0.2)' }}>

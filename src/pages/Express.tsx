@@ -21,7 +21,7 @@ const Express: React.FC = () => {
           gradient="success"
         >
           <div style={{ marginTop: '1rem', paddingBottom: '0.5rem' }}>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', opacity: 0.9 }}>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', color: 'var(--color-text-light)' }}>
               Calificás para un retiro inmediato por tu excelente historial.
             </p>
           </div>
@@ -33,7 +33,7 @@ const Express: React.FC = () => {
           gradient="warning"
         >
           <div style={{ marginTop: '1rem', paddingBottom: '0.5rem' }}>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', opacity: 0.9 }}>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', color: 'var(--color-text-light)' }}>
               Necesitás regularizar tus aportes para acceder a este beneficio.
             </p>
           </div>

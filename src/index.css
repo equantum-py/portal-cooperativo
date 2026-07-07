@@ -658,15 +658,18 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 .socio-hero-card {
   border-radius: 24px;
   padding: clamp(1.25rem, 5vw, 1.75rem);
-  color: white;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.2);
   width: 100%;
   box-sizing: border-box;
 }
 
-.socio-hero-card::after {
+.socio-hero-card.dark {
+  color: white;
+  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.2);
+}
+
+.socio-hero-card.dark::after {
   content: '';
   position: absolute;
   top: -50%;
@@ -677,17 +680,41 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   border-radius: 50%;
 }
 
-.socio-hero-gradient-primary { background: linear-gradient(135deg, #0A2053 0%, #123B7A 55%, #03AAE5 130%); }
-.socio-hero-gradient-success { background: linear-gradient(135deg, #0A2053 0%, #12B76A 130%); }
-.socio-hero-gradient-warning { background: linear-gradient(135deg, #0A2053 0%, #F79009 130%); }
-.socio-hero-gradient-danger  { background: linear-gradient(135deg, #0A2053 0%, #D92D20 130%); }
+.socio-hero-card.light {
+  background-color: var(--color-white);
+  color: var(--color-text);
+  box-shadow: 0 8px 25px -5px rgba(0,0,0,0.06);
+  border: 1px solid var(--color-border);
+  border-top: 6px solid transparent; /* Placeholder for accent */
+}
+
+.socio-hero-card.light::after {
+  display: none;
+}
+
+.socio-hero-gradient-primary.dark { background: linear-gradient(135deg, #0A2053 0%, #123B7A 55%, #03AAE5 130%); }
+.socio-hero-gradient-success.dark { background: linear-gradient(135deg, #0A2053 0%, #12B76A 130%); }
+.socio-hero-gradient-warning.dark { background: linear-gradient(135deg, #0A2053 0%, #F79009 130%); }
+.socio-hero-gradient-danger.dark  { background: linear-gradient(135deg, #0A2053 0%, #D92D20 130%); }
+
+.socio-hero-gradient-primary.light { border-top-color: var(--color-primary); }
+.socio-hero-gradient-success.light { border-top-color: var(--color-success); }
+.socio-hero-gradient-warning.light { border-top-color: var(--color-warning); }
+.socio-hero-gradient-danger.light  { border-top-color: var(--color-danger); }
 
 .socio-hero-label {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  opacity: 0.8;
   margin-bottom: 0.25rem;
+}
+
+.socio-hero-card.dark .socio-hero-label {
+  color: rgba(255,255,255,0.75);
+}
+
+.socio-hero-card.light .socio-hero-label {
+  color: var(--color-text-light);
 }
 
 .socio-hero-value {
@@ -697,6 +724,14 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   letter-spacing: -1px;
   line-height: 1.1;
   word-break: break-word;
+}
+
+.socio-hero-card.dark .socio-hero-value {
+  color: white;
+}
+
+.socio-hero-card.light .socio-hero-value {
+  color: var(--color-text);
 }
 
 /* Standard Finance Card */

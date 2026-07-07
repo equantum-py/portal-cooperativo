@@ -26,12 +26,12 @@ const Prestamos: React.FC = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
           <div>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Próximo Vencimiento</p>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem' }}>{mockUser.fechaProximoVencimiento}</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Próximo Vencimiento</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-text)' }}>{mockUser.fechaProximoVencimiento}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Cuota a Pagar</p>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.25rem' }}>{formatCurrency(mockUser.montoProximaCuota)}</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Cuota a Pagar</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.25rem', color: 'var(--color-text)' }}>{formatCurrency(mockUser.montoProximaCuota)}</p>
           </div>
         </div>
         <div style={{ marginTop: '1rem' }}>
@@ -41,7 +41,7 @@ const Prestamos: React.FC = () => {
               {mockUser.cuotasVencidas} cuota{mockUser.cuotasVencidas !== 1 ? 's' : ''} vencida{mockUser.cuotasVencidas !== 1 ? 's' : ''}
             </span>
           ) : (
-            <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ backgroundColor: '#D1FADF', color: 'var(--color-success)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(18, 183, 106, 0.2)' }}>
               <i className="fa-solid fa-check-circle"></i>
               Crédito al Día
             </span>

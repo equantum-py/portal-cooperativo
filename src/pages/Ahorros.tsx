@@ -22,12 +22,12 @@ const Ahorros: React.FC = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem', paddingBottom: '0.5rem' }}>
           <div>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Cuenta Ahorro a la Vista</p>
-            <p style={{ margin: 0, fontWeight: 500, fontSize: '0.95rem' }}>***{mockUser.numeroSocio}</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Cuenta Ahorro a la Vista</p>
+            <p style={{ margin: 0, fontWeight: 500, fontSize: '0.95rem', color: 'var(--color-text)' }}>***{mockUser.numeroSocio}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Total Histórico</p>
-            <p style={{ margin: 0, fontWeight: 600, fontSize: '1.1rem' }}>{formatCurrency(mockUser.totalAhorrado)}</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Total Histórico</p>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: '1.1rem', color: 'var(--color-text)' }}>{formatCurrency(mockUser.totalAhorrado)}</p>
           </div>
         </div>
       </SocioHeroCard>

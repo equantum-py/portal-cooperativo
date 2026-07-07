@@ -26,15 +26,15 @@ const Aportes: React.FC = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
           <div>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Estado Actual</p>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Estado Actual</p>
             {isAtrasado 
               ? <span style={{ backgroundColor: '#FEE4E2', color: 'var(--color-danger)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(217, 45, 32, 0.2)' }}><i className="fa-solid fa-circle-exclamation"></i> Atrasado ({mockUser.aportesAtrasadosMeses} meses)</span>
-              : <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}><i className="fa-solid fa-check-circle"></i> Al Día</span>}
+              : <span style={{ backgroundColor: '#D1FADF', color: 'var(--color-success)', padding: '0.4rem 0.85rem', borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(18, 183, 106, 0.2)' }}><i className="fa-solid fa-check-circle"></i> Al Día</span>}
           </div>
           {isAtrasado && (
             <div style={{ textAlign: 'right' }}>
-              <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Deuda</p>
-              <p style={{ margin: 0, fontWeight: 700, fontSize: '1.25rem' }}>{formatCurrency(mockUser.aportesAtrasadosMonto)}</p>
+              <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', color: 'var(--color-text-light)' }}>Deuda</p>
+              <p style={{ margin: 0, fontWeight: 700, fontSize: '1.25rem', color: 'var(--color-danger)' }}>{formatCurrency(mockUser.aportesAtrasadosMonto)}</p>
             </div>
           )}
         </div>
