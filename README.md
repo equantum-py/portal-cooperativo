@@ -24,11 +24,39 @@ El comportamiento de la aplicación está gobernado por el archivo `src/config/a
 - Si `modoDemo: true`, la aplicación utilizará los datos ampliados de `src/data/mockData.ts` (Incluyendo el listado del padrón y el flujo de caja).
 - Si `modoDemo: false`, la aplicación utilizará el cliente de Supabase (`src/lib/supabaseClient.ts`) e intentará autenticar usuarios reales contra tu base de datos y leer la información mediante RLS.
 
+## Links de acceso
+
+- **Portal del socio**: `https://asoapp.vercel.app`
+- **Panel administrativo**: `https://asoapp.vercel.app/admin`
+
+### Credenciales demo
+
+**Socio:**
+- Cédula: `1234567`
+- PIN: `1234`
+
+**Administrador:**
+- Usuario: `admin`
+- PIN: `1234`
+
+## Flujo de Datos Reales (Producción)
+
+El flujo real planificado será el siguiente:
+
+1. Excel de la cooperativa.
+2. Importar desde Panel Administrativo.
+3. Validar columnas y datos.
+4. Guardar en Supabase/PostgreSQL.
+5. El panel admin se alimenta de esos datos.
+6. Cada socio ve únicamente sus propios datos en la app.
+
 ## Cómo ejecutar localmente
 1. Cloná este repositorio.
 2. Asegurate de estar en la carpeta correcta: `cd react-app/portal-cooperativo`.
 3. Ejecutá `npm install` para instalar todas las dependencias.
 4. Ejecutá `npm run dev` para iniciar el servidor local.
 
-## Siguientes Pasos
-Actualmente la interfaz administrativa es interactiva y funcional a nivel demostrativo. En próximas etapas de desarrollo se implementará la lógica real para procesar documentos de Excel, exportación de PDFs y conexión en vivo al panel administrativo en Supabase.
+## Preparación Técnica
+- En modo demo, los datos importados se guardan en `localStorage`.
+- En modo producción, los datos importados se guardarán en Supabase.
+- El panel administrativo será la única fuente de carga y actualización de: socios, aportes, préstamos, cuotas, pagos, ahorros, y notificaciones.

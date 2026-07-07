@@ -9,7 +9,18 @@ const AdminImportExport: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [importTipo, setImportTipo] = useState('socios');
   const [importing, setImporting] = useState(false);
-  const [importResult, setImportResult] = useState<{ total: number, valid: number, errors: number } | null>(null);
+  const [importResult, setImportResult] = useState<{ total: number, valid: number, errors: number, columnasDetectadas: string[], faltanObligatorias: boolean } | null>(null);
+
+  const columnasEsperadas = [
+    'nombre', 'apellido', 'cedula', 'telefono', 'email', 'direccion', 'ciudad',
+    'numero_socio', 'estado', 'aporte_mensual', 'aportes_atrasados', 'total_ahorrado',
+    'prestamo_activo', 'cantidad_prestamos', 'monto_prestamo', 'cuotas_pagadas',
+    'cuotas_pendientes', 'cuotas_vencidas', 'proximo_vencimiento', 'pago_pendiente', 'observacion'
+  ];
+
+  const columnasObligatorias = [
+    'nombre', 'apellido', 'cedula', 'telefono', 'numero_socio', 'aporte_mensual'
+  ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -31,10 +42,21 @@ const AdminImportExport: React.FC = () => {
       const simulatedTotal = Math.floor(Math.random() * 50) + 10;
       const simulatedErrors = Math.floor(Math.random() * 5);
       
+      // Simular detección de columnas
+      const detectadas = importTipo === 'socios' 
+        ? ['nombre', 'apellido', 'cedula', 'telefono', 'numero_socio', 'aporte_mensual', 'email'] // simulamos que detectó estas
+        : ['col1', 'col2'];
+
+      const faltanObligatorias = importTipo === 'socios' 
+        ? !columnasObligatorias.every(col => detectadas.includes(col)) 
+        : false;
+      
       setImportResult({
         total: simulatedTotal,
         valid: simulatedTotal - simulatedErrors,
-        errors: simulatedErrors
+        errors: simulatedErrors,
+        columnasDetectadas: detectadas,
+        faltanObligatorias
       });
       setImporting(false);
       showToast('Simulación completada', 'info');
@@ -46,7 +68,6 @@ const AdminImportExport: React.FC = () => {
     
     setImporting(true);
     setTimeout(() => {
-      // Si importa socios en demo, agregamos un par falsos.
       if (importTipo === 'socios') {
         const fakeSocio = {
           nombre: `Importado ${Math.floor(Math.random() * 1000)}`,
@@ -115,7 +136,23 @@ const AdminImportExport: React.FC = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      showToast(`Archivo ${filename}.csv generado (Demo)`, 'success');
+      showToast(`Archivo ${filename}.csv generado`, 'success');
+    }
+  };
+
+  const handleDescargarPlantilla = () => {
+    const csvContent = columnasEsperadas.join(',');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'plantilla_socios_cooperativa.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Plantilla CSV descargada exitosamente.', 'success');
     }
   };
 
@@ -170,7 +207,15 @@ const AdminImportExport: React.FC = () => {
         <p className="text-muted">Migración y resguardo de información (Archivos CSV/Excel).</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+      <div style={{ backgroundColor: 'var(--color-warning-light)', padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '2rem', border: '1px solid var(--color-warning)' }}>
+        <h4 style={{ color: 'var(--color-warning-dark)', margin: '0 0 0.5rem 0' }}><i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '0.5rem' }}></i>Aviso Importante</h4>
+        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--color-warning-dark)' }}>
+          En esta versión demo la importación es simulada y los datos se guardan en localStorage temporalmente. 
+          En producción, estos datos se guardarán en <strong>Supabase/PostgreSQL</strong> y alimentarán automáticamente el panel administrativo y la app del socio en tiempo real.
+        </p>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
         
         {/* PANEL IMPORTAR */}
         <div className="card" style={{ padding: '2rem' }}>
@@ -204,14 +249,29 @@ const AdminImportExport: React.FC = () => {
           </div>
 
           {importResult && (
-            <div style={{ padding: '1rem', backgroundColor: 'var(--color-info-light)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem' }}>
+            <div style={{ padding: '1rem', backgroundColor: importResult.faltanObligatorias ? 'var(--color-danger-light)' : 'var(--color-info-light)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem' }}>
               <h4 style={{ marginBottom: '0.5rem', fontSize: '0.95rem' }}>Resumen de Simulación</h4>
-              <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.9rem' }}>
+              <ul style={{ margin: '0 0 1rem 0', paddingLeft: '1.5rem', fontSize: '0.9rem' }}>
+                <li>Archivo: <strong>{file?.name}</strong></li>
+                <li>Tipo: <strong style={{ textTransform: 'capitalize' }}>{importTipo}</strong></li>
                 <li>Registros detectados: <strong>{importResult.total}</strong></li>
                 <li>Registros válidos: <strong style={{ color: 'var(--color-success)' }}>{importResult.valid}</strong></li>
                 <li>Registros con error: <strong style={{ color: 'var(--color-danger)' }}>{importResult.errors}</strong></li>
-                <li>Tipo: <strong style={{ textTransform: 'capitalize' }}>{importTipo}</strong></li>
               </ul>
+              
+              <h5 style={{ marginBottom: '0.5rem', fontSize: '0.9rem' }}>Columnas detectadas:</h5>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '0.5rem' }}>
+                {importResult.columnasDetectadas.map(col => (
+                  <span key={col} style={{ backgroundColor: 'var(--color-bg)', padding: '0.1rem 0.4rem', borderRadius: '4px', fontSize: '0.8rem', border: '1px solid var(--color-border)' }}>{col}</span>
+                ))}
+              </div>
+
+              {importResult.faltanObligatorias && (
+                <p style={{ margin: 0, color: 'var(--color-danger)', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '0.25rem' }}></i>
+                  Faltan columnas obligatorias. Verificá la plantilla.
+                </p>
+              )}
             </div>
           )}
 
@@ -219,7 +279,7 @@ const AdminImportExport: React.FC = () => {
             <button className="btn btn-outline" style={{ flex: 1 }} onClick={handleSimularImportacion} disabled={!file || importing}>
               {importing && !importResult ? <i className="fa-solid fa-spinner fa-spin"></i> : 'Simular'}
             </button>
-            <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleConfirmarImportacion} disabled={!importResult || importing}>
+            <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleConfirmarImportacion} disabled={!importResult || importing || importResult.faltanObligatorias}>
               {importing && importResult ? <i className="fa-solid fa-spinner fa-spin"></i> : 'Confirmar'}
             </button>
             {file && (
@@ -253,6 +313,39 @@ const AdminImportExport: React.FC = () => {
         </div>
 
       </div>
+
+      {/* FORMATO ESPERADO */}
+      <div className="card" style={{ padding: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <h2 className="title-md" style={{ margin: 0 }}>
+            <i className="fa-solid fa-table-columns" style={{ color: 'var(--color-primary)', marginRight: '0.5rem' }}></i> Formato esperado para importar socios
+          </h2>
+          <button className="btn btn-primary" onClick={handleDescargarPlantilla}>
+            <i className="fa-solid fa-download" style={{ marginRight: '0.5rem' }}></i> Descargar plantilla Excel
+          </button>
+        </div>
+        
+        <p className="text-muted" style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
+          Al subir un archivo CSV/Excel de socios, el sistema espera encontrar (al menos) las siguientes columnas en la primera fila. 
+          Las marcadas con un <span style={{ color: 'var(--color-danger)' }}>*</span> son obligatorias.
+        </p>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', backgroundColor: 'var(--color-bg)', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+          {columnasEsperadas.map(col => (
+            <div key={col} style={{ 
+              padding: '0.5rem 1rem', 
+              backgroundColor: 'var(--color-white)', 
+              border: `1px solid ${columnasObligatorias.includes(col) ? 'var(--color-primary)' : 'var(--color-border)'}`,
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.9rem',
+              fontWeight: columnasObligatorias.includes(col) ? 600 : 400
+            }}>
+              {col} {columnasObligatorias.includes(col) && <span style={{ color: 'var(--color-danger)' }}>*</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 };

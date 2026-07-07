@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import AdminLogin from './pages/admin/AdminLogin';
 import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import PrivateLayout from './layouts/PrivateLayout';
@@ -38,6 +39,8 @@ function App() {
         
         {/* Rutas Públicas */}
         <Route path="/login" element={session ? <Navigate to={session.rol === 'admin' ? "/dashboard/admin" : "/dashboard"} replace /> : <Login />} />
+        <Route path="/admin" element={session ? <Navigate to={session.rol === 'admin' ? "/dashboard/admin" : "/dashboard"} replace /> : <AdminLogin />} />
+        <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         
