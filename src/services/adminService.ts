@@ -10,6 +10,7 @@ export const adminService = {
       return mockAdminStats;
     } else {
       // Implementación Real con Supabase (Ejemplo de múltiples queries)
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { count: totalSocios } = await supabase.from('socios').select('*', { count: 'exact', head: true });
       const { count: sociosActivos } = await supabase.from('socios').select('*', { count: 'exact', head: true }).eq('estado', 'activo');
       const { count: prestamosActivos } = await supabase.from('prestamos').select('*', { count: 'exact', head: true }).eq('estado', 'activo');

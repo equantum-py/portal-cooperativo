@@ -28,6 +28,7 @@ export const authService = {
       throw new Error('Cédula o contraseña incorrecta');
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data, error } = await supabase.auth.signInWithPassword({
         email: `${cedula}@portalcooperativo.local`, // o usar custom auth
         password: password,
@@ -61,6 +62,7 @@ export const authService = {
       await delay(300);
       localStorage.removeItem('userSession');
     } else {
+      if (!supabase) throw new Error('Supabase no está configurado');
       await supabase.auth.signOut();
       localStorage.removeItem('userSession');
     }

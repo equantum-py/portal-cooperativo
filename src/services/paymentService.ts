@@ -16,6 +16,7 @@ export const paymentService = {
       };
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data: pagos, error } = await supabase.from('pagos').select('*').eq('estado', 'pendiente');
       if (error) throw error;
       

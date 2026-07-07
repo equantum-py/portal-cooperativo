@@ -10,6 +10,7 @@ export const memberService = {
       return mockUser;
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data, error } = await supabase
         .from('socios')
         .select(`

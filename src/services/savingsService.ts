@@ -16,6 +16,7 @@ export const savingsService = {
       };
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data, error } = await supabase.from('ahorros').select('*').single();
       if (error && error.code !== 'PGRST116') throw error;
       
@@ -32,6 +33,7 @@ export const savingsService = {
       return mockUser.movimientosAhorro;
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data: ahorro, error: ahorroError } = await supabase.from('ahorros').select('id').single();
       if (ahorroError || !ahorro) return [];
 

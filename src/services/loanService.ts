@@ -24,6 +24,7 @@ export const loanService = {
       };
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data: prestamo, error: prestamoError } = await supabase
         .from('prestamos')
         .select('*')
