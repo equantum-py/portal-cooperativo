@@ -1,5 +1,5 @@
 import { appConfig } from '../config/appConfig';
-import { supabase } from '../lib/supabaseClient';
+import { requireSupabase, supabase } from '../lib/supabaseClient';
 
 export const delay = (ms: number = appConfig.simularRetardoAPI) => 
   new Promise(resolve => setTimeout(resolve, ms));
@@ -9,6 +9,7 @@ export interface UserSession {
   nombre: string;
   token: string;
   rol: 'socio' | 'admin';
+  email?: string;
 }
 
 export const authService = {
@@ -43,29 +44,40 @@ export const authService = {
       }
       throw new Error('Usuario o PIN incorrecto');
     } else {
-      // Implementación Real con Supabase
-      if (!supabase) throw new Error('Supabase no está configurado');
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: `${usuario}@portalcooperativo.local`, // o usar custom auth
+      const client = requireSupabase();
+      const { data, error } = await client.auth.signInWithPassword({
+        email: usuario,
         password: pin,
       });
 
       if (error) throw new Error(error.message);
+      if (!data.user || !data.session) throw new Error('No se pudo iniciar sesión administrativa.');
 
-      // Obtener datos del perfil desde la tabla socios
-      const { data: profileData, error: profileError } = await supabase
-        .from('socios')
-        .select('cedula, nombre_completo, rol')
+      const { data: profileData, error: profileError } = await client
+        .from('admin_profiles')
+        .select('nombre, email, rol, activo')
         .eq('user_id', data.user.id)
-        .single();
+        .maybeSingle();
 
-      if (profileError || !profileData) throw new Error('Error al obtener perfil del admin');
+      if (profileError) {
+        await client.auth.signOut();
+        localStorage.removeItem('userSession');
+        throw new Error('No se pudo validar el perfil administrativo.');
+      }
 
+      if (!profileData || profileData.activo !== true) {
+        await client.auth.signOut();
+        localStorage.removeItem('userSession');
+        throw new Error('Tu usuario no tiene un perfil administrativo activo.');
+      }
+
+      const email = profileData.email || data.user.email || usuario;
       const session: UserSession = {
-        cedula: profileData.cedula,
-        nombre: profileData.nombre_completo,
+        cedula: email,
+        nombre: profileData.nombre || email,
         token: data.session.access_token,
-        rol: profileData.rol as 'socio' | 'admin'
+        rol: 'admin',
+        email,
       };
       
       localStorage.setItem('userSession', JSON.stringify(session));

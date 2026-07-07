@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/authService';
+import { appConfig } from '../../config/appConfig';
 import AuthLayout from '../../components/auth/AuthLayout';
 
 const AdminLogin: React.FC = () => {
@@ -9,6 +10,7 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const isDemoMode = appConfig.modoDemo;
 
   useEffect(() => {
     authService.logout();
@@ -19,15 +21,19 @@ const AdminLogin: React.FC = () => {
     setError('');
 
     if (!usuario.trim()) {
-      setError('Ingresá tu usuario o cédula administrativa.');
+      setError(isDemoMode ? 'Ingresá tu usuario administrativo.' : 'Ingresá tu email administrativo.');
       return;
     }
     if (!password.trim()) {
-      setError('Ingresá tu contraseña o PIN.');
+      setError(isDemoMode ? 'Ingresá tu PIN.' : 'Ingresá tu contraseña.');
       return;
     }
-    if (/^\d+$/.test(usuario.trim())) {
+    if (isDemoMode && /^\d+$/.test(usuario.trim())) {
       setError('Este acceso es solo para administradores.');
+      return;
+    }
+    if (!isDemoMode && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usuario.trim())) {
+      setError('Ingresá un email administrativo válido.');
       return;
     }
 
@@ -48,7 +54,7 @@ const AdminLogin: React.FC = () => {
         <i className="fa-solid fa-shield-halved"></i>
       </div>
       <h1 className="auth-title">Panel Administrativo</h1>
-      <p className="auth-subtitle">Gestión financiera y operativa de la cooperativa.</p>
+      <p className="auth-subtitle">{isDemoMode ? 'Gestión financiera y operativa de la cooperativa.' : 'Ingresá con tu email y contraseña de Supabase Auth.'}</p>
 
       {error && (
         <div style={{ backgroundColor: 'var(--color-danger)', color: 'var(--color-white)', padding: '0.75rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
@@ -58,12 +64,12 @@ const AdminLogin: React.FC = () => {
 
       <form onSubmit={handleLogin} noValidate>
         <div className="auth-input-group">
-          <label className="auth-input-label">Usuario o Cédula Administrativa</label>
+          <label className="auth-input-label">{isDemoMode ? 'Usuario Administrativo' : 'Email Administrativo'}</label>
           <div style={{ position: 'relative' }}>
             <input 
               type="text" 
               className="auth-input" 
-              placeholder="Ej: admin" 
+              placeholder={isDemoMode ? 'Ej: admin' : 'admin@cooperativa.com'} 
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               style={{ paddingLeft: '2.5rem' }}
@@ -73,12 +79,12 @@ const AdminLogin: React.FC = () => {
         </div>
         
         <div className="auth-input-group">
-          <label className="auth-input-label">Contraseña o PIN</label>
+          <label className="auth-input-label">{isDemoMode ? 'PIN' : 'Contraseña'}</label>
           <div style={{ position: 'relative' }}>
             <input 
               type="password" 
               className="auth-input" 
-              placeholder="••••••••"
+              placeholder={isDemoMode ? '1234' : '••••••••'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{ paddingLeft: '2.5rem' }}
@@ -88,7 +94,7 @@ const AdminLogin: React.FC = () => {
         </div>
 
         <button type="submit" className="auth-button" disabled={loading}>
-          {loading ? 'Verificando...' : 'Ingresar al panel'}
+          {loading ? 'Verificando...' : (isDemoMode ? 'Ingresar al panel demo' : 'Ingresar al panel')}
         </button>
       </form>
 
@@ -100,7 +106,7 @@ const AdminLogin: React.FC = () => {
       </div>
 
       <div className="auth-security-text">
-        <i className="fa-solid fa-server"></i> Acceso exclusivo para responsables autorizados
+        <i className="fa-solid fa-server"></i> {isDemoMode ? 'Modo demo: usuario admin / PIN 1234' : 'Modo Supabase: acceso exclusivo para administradores activos'}
       </div>
     </AuthLayout>
   );
