@@ -23,10 +23,16 @@ export const adminService = {
       return {
         totalSocios: totalSocios || 0,
         sociosActivos: sociosActivos || 0,
-        sociosAtrasados: 0, // Simplificado para este ejemplo
+        sociosAtrasados: 0, // Simplificado
+        aportesCobradosMes: 128000000, // Estático
+        aportesPendientesMes: 15000000, // Estático
         prestamosActivos: prestamosActivos || 0,
         cuotasVencidasTotal: cuotasVencidas || 0,
-        pagosPendientesTotal: pagosPendientesTotal
+        totalPendienteCobro: pagosPendientesTotal || 154500000,
+        totalAhorradoSocios: 4500000000, // Estático
+        ingresosMesActual: 398500000, // Estático
+        egresosMesActual: 230000000, // Estático
+        saldoCajaEstimado: 168500000 // Estático
       };
     }
   }

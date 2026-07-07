@@ -90,7 +90,7 @@ const AdminSocios: React.FC = () => {
                       <Badge type={
                         socio.estadoSocio === 'Activo' ? 'success' :
                         socio.estadoSocio === 'Atrasado' ? 'danger' :
-                        socio.estadoSocio === 'Pendiente' ? 'warning' : 'default'
+                        socio.estadoSocio === 'Pendiente' ? 'warning' : 'info'
                       }>
                         {socio.estadoSocio}
                       </Badge>
