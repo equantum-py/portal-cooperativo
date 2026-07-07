@@ -1,90 +1,123 @@
 import React from 'react';
 import { mockUser, formatCurrency } from '../data/mockData';
-import Badge from '../components/Badge';
+import SocioPageHeader from '../components/socio/SocioPageHeader';
+import SocioSectionCard from '../components/socio/SocioSectionCard';
+import SocioMovementItem from '../components/socio/SocioMovementItem';
+import SocioStatusBadge from '../components/socio/SocioStatusBadge';
+import SocioEmptyState from '../components/socio/SocioEmptyState';
 
 const Prestamos: React.FC = () => {
+  const isAtrasado = mockUser.cuotasVencidas > 0;
+
   return (
-    <div>
-      <h1 className="title-lg mb-3">Mis Préstamos</h1>
+    <div className="socio-page">
+      <SocioPageHeader 
+        title="Mis Préstamos" 
+        subtitle="Consultá tus cuotas y vencimientos" 
+      />
       
-      <div className="card mb-3">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <SocioSectionCard>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <div>
-            <h2 className="title-md" style={{ marginBottom: 0 }}>Préstamo Vigente</h2>
+            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Total Concedido</p>
+            <p style={{ fontWeight: 700, fontSize: '1.5rem', margin: 0, color: 'var(--color-primary)' }}>
+              {formatCurrency(mockUser.prestamoConcedido)}
+            </p>
           </div>
           <div>
-            {mockUser.cuotasVencidas > 0
-              ? <Badge type="danger">Atrasado</Badge>
-              : <Badge type="success">Al día</Badge>}
+            {isAtrasado 
+              ? <SocioStatusBadge type="danger">Vencido</SocioStatusBadge>
+              : <SocioStatusBadge type="success">Al día</SocioStatusBadge>}
           </div>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
-          <div>
-            <p className="text-muted mb-1">Total Concedido</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{formatCurrency(mockUser.prestamoConcedido)}</p>
+        <div className="socio-grid-2">
+          <div className="socio-data-block">
+            <p>Cuotas Pagadas</p>
+            <p>{mockUser.cuotasPagadas}</p>
           </div>
-          <div>
-            <p className="text-muted mb-1">Cuotas Pagadas</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{mockUser.cuotasPagadas}</p>
+          <div className="socio-data-block">
+            <p>Cuotas Pendientes</p>
+            <p>{mockUser.cuotasPendientes}</p>
           </div>
-          <div>
-            <p className="text-muted mb-1">Cuotas Pendientes</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{mockUser.cuotasPendientes}</p>
-          </div>
-          <div>
-            <p className="text-muted mb-1">Cuotas Vencidas</p>
-            <p style={{ fontWeight: mockUser.cuotasVencidas > 0 ? 'bold' : 500, fontSize: '1.1rem', color: mockUser.cuotasVencidas > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}>
-              {mockUser.cuotasVencidas}
-            </p>
-          </div>
+          {isAtrasado && (
+            <div className="socio-data-block" style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
+              <p>Cuotas Vencidas</p>
+              <p style={{ color: 'var(--color-danger)', fontSize: '1.1rem', fontWeight: 600 }}>
+                {mockUser.cuotasVencidas} cuotas
+              </p>
+            </div>
+          )}
         </div>
+      </SocioSectionCard>
 
-        <div style={{ backgroundColor: 'var(--color-bg)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
-          <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>Próxima Cuota</h3>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ margin: '0 1rem 1.5rem' }}>
+        <div style={{ 
+          backgroundColor: isAtrasado ? 'rgba(239, 68, 68, 0.05)' : 'var(--color-bg)', 
+          border: isAtrasado ? '1px solid rgba(239, 68, 68, 0.2)' : '1px solid rgba(0,0,0,0.05)',
+          padding: '1.5rem', 
+          borderRadius: '20px' 
+        }}>
+          <h3 style={{ fontSize: '0.95rem', margin: '0 0 1rem', color: isAtrasado ? 'var(--color-danger)' : 'var(--color-text)' }}>
+            Próximo Vencimiento
+          </h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.25rem' }}>
             <div>
-              <p className="text-muted mb-1">Monto a pagar</p>
-              <p style={{ fontWeight: 500, fontSize: '1.25rem', color: 'var(--color-primary)' }}>{formatCurrency(mockUser.montoProximaCuota)}</p>
+              <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Monto a pagar</p>
+              <p style={{ fontWeight: 600, fontSize: '1.25rem', color: isAtrasado ? 'var(--color-danger)' : 'var(--color-primary)', margin: 0 }}>
+                {formatCurrency(mockUser.montoProximaCuota)}
+              </p>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p className="text-muted mb-1">Vencimiento</p>
-              <p style={{ fontWeight: 500 }}>{mockUser.fechaProximoVencimiento}</p>
+              <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Fecha</p>
+              <p style={{ fontWeight: 500, margin: 0 }}>{mockUser.fechaProximoVencimiento}</p>
             </div>
           </div>
-          <button className="btn btn-secondary mt-3">Pagar Cuota</button>
+          <button className={`socio-cta-btn ${isAtrasado ? 'socio-cta-danger' : 'socio-cta-primary'}`}>
+            Pagar Cuota
+          </button>
         </div>
       </div>
 
-      <div className="card">
-        <h2 className="title-md mb-3">Historial de Pagos</h2>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Cuota</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Vencimiento</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Monto</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockUser.historialPrestamos.map(prestamo => (
-                <tr key={prestamo.id}>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>Cuota {prestamo.cuota}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>{prestamo.vencimiento}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>{formatCurrency(prestamo.monto)}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>
-                    {prestamo.estado === 'pagado' && <Badge type="success">Pagado</Badge>}
-                    {prestamo.estado === 'pendiente' && <Badge type="warning">Pendiente</Badge>}
-                    {prestamo.estado === 'vencido' && <Badge type="danger">Vencido</Badge>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <SocioSectionCard title="Historial de Cuotas">
+        {mockUser.historialPrestamos.length > 0 ? (
+          <div className="socio-movement-list">
+            {mockUser.historialPrestamos.map(prestamo => {
+              let iconColor: 'success' | 'warning' | 'danger' = 'success';
+              let badgeType: 'success' | 'warning' | 'danger' = 'success';
+              
+              if (prestamo.estado === 'pendiente') {
+                iconColor = 'warning';
+                badgeType = 'warning';
+              } else if (prestamo.estado === 'vencido') {
+                iconColor = 'danger';
+                badgeType = 'danger';
+              }
+
+              return (
+                <SocioMovementItem 
+                  key={prestamo.id}
+                  icon="fa-hand-holding-dollar"
+                  iconColor={iconColor}
+                  title={`Cuota ${prestamo.cuota}`}
+                  date={prestamo.vencimiento}
+                  amount={formatCurrency(prestamo.monto)}
+                  rightAddon={
+                    <SocioStatusBadge type={badgeType}>
+                      {prestamo.estado.charAt(0).toUpperCase() + prestamo.estado.slice(1)}
+                    </SocioStatusBadge>
+                  }
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <SocioEmptyState 
+            icon="fa-file-invoice" 
+            title="Aún no hay cuotas registradas" 
+          />
+        )}
+      </SocioSectionCard>
     </div>
   );
 };

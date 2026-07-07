@@ -592,3 +592,201 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   }
 }
 
+/* --- SOCIO INTERNAL PAGES --- */
+.socio-page {
+  padding-bottom: 2rem;
+  animation: fadeSlideUp 0.4s ease-out forwards;
+}
+
+.socio-page-header {
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.socio-page-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+
+.socio-page-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.socio-card {
+  background-color: var(--color-white);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin: 0 1rem 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.socio-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--color-text);
+}
+
+.socio-movement-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.socio-movement-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.socio-movement-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.socio-movement-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-right: 1rem;
+}
+
+.socio-movement-content {
+  flex: 1;
+}
+
+.socio-movement-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.socio-movement-date {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.socio-movement-amount {
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: right;
+}
+
+.socio-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.socio-cta-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 14px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  text-decoration: none;
+}
+.socio-cta-btn:active {
+  transform: scale(0.98);
+}
+.socio-cta-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #0a2053 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(10,32,83,0.2);
+}
+.socio-cta-secondary {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+.socio-cta-danger {
+  background-color: var(--color-danger);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.socio-empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--color-text-light);
+}
+
+.socio-empty-state i {
+  font-size: 3rem;
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+.socio-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.socio-data-block p:first-child {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.15rem;
+}
+.socio-data-block p:last-child {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--color-text);
+}
+
+@media (min-width: 769px) {
+  .socio-page-header {
+    padding: 1rem 0;
+  }
+  .socio-card {
+    margin: 0 0 1.5rem 0;
+  }
+}
+
+.socio-chip-list {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0 1rem 1rem;
+  margin-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.socio-chip-list::-webkit-scrollbar {
+  display: none;
+}
+.socio-chip {
+  padding: 0.4rem 1rem;
+  background-color: var(--color-white);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-light);
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.socio-chip.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+

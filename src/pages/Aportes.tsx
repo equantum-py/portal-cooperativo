@@ -1,81 +1,102 @@
 import React from 'react';
 import { mockUser, formatCurrency } from '../data/mockData';
-import Badge from '../components/Badge';
+import SocioPageHeader from '../components/socio/SocioPageHeader';
+import SocioSectionCard from '../components/socio/SocioSectionCard';
+import SocioMovementItem from '../components/socio/SocioMovementItem';
+import SocioStatusBadge from '../components/socio/SocioStatusBadge';
+import SocioEmptyState from '../components/socio/SocioEmptyState';
 
 const Aportes: React.FC = () => {
+  const isAtrasado = mockUser.aportesAtrasadosMeses > 0;
+
   return (
-    <div>
-      <h1 className="title-lg mb-3">Tus Aportes</h1>
+    <div className="socio-page">
+      <SocioPageHeader 
+        title="Mis Aportes" 
+        subtitle="Estado actualizado de tus aportes mensuales" 
+      />
       
-      <div className="card mb-3">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <SocioSectionCard>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <div>
-            <h2 className="title-md" style={{ marginBottom: 0 }}>Estado de Aportes</h2>
-          </div>
-          <div>
-            {mockUser.aportesAtrasadosMeses > 0 
-              ? <Badge type="danger">Atrasado ({mockUser.aportesAtrasadosMeses} meses)</Badge>
-              : <Badge type="success">Al día</Badge>}
-          </div>
-        </div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-          <div>
-            <p className="text-muted mb-1">Aporte Mensual</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{formatCurrency(mockUser.aporteMensual)}</p>
-          </div>
-          <div>
-            <p className="text-muted mb-1">Meses Pagados</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{mockUser.mesesPagadosAporte}</p>
-          </div>
-          <div>
-            <p className="text-muted mb-1">Meses Pendientes</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem' }}>{mockUser.mesesPendientesAporte}</p>
-          </div>
-          <div>
-            <p className="text-muted mb-1">Deuda por Atraso</p>
-            <p style={{ fontWeight: 500, fontSize: '1.1rem', color: mockUser.aportesAtrasadosMonto > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}>
-              {formatCurrency(mockUser.aportesAtrasadosMonto)}
+            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Aporte Mensual</p>
+            <p style={{ fontWeight: 700, fontSize: '1.5rem', margin: 0, color: 'var(--color-primary)' }}>
+              {formatCurrency(mockUser.aporteMensual)}
             </p>
           </div>
+          <div>
+            {isAtrasado 
+              ? <SocioStatusBadge type="danger">Atrasado ({mockUser.aportesAtrasadosMeses} meses)</SocioStatusBadge>
+              : <SocioStatusBadge type="success">Al día</SocioStatusBadge>}
+          </div>
         </div>
         
-        {mockUser.aportesAtrasadosMeses > 0 && (
+        <div className="socio-grid-2">
+          <div className="socio-data-block">
+            <p>Meses Pagados</p>
+            <p>{mockUser.mesesPagadosAporte}</p>
+          </div>
+          <div className="socio-data-block">
+            <p>Meses Pendientes</p>
+            <p>{mockUser.mesesPendientesAporte}</p>
+          </div>
+          {isAtrasado && (
+            <div className="socio-data-block" style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
+              <p>Deuda por Atraso</p>
+              <p style={{ color: 'var(--color-danger)', fontSize: '1.1rem', fontWeight: 600 }}>
+                {formatCurrency(mockUser.aportesAtrasadosMonto)}
+              </p>
+            </div>
+          )}
+        </div>
+        
+        {isAtrasado && (
           <div className="mt-4">
-            <button className="btn btn-primary">Regularizar Aporte Online</button>
+            <button className="socio-cta-btn socio-cta-danger">Regularizar Aporte Online</button>
           </div>
         )}
-      </div>
+      </SocioSectionCard>
 
-      <div className="card">
-        <h2 className="title-md mb-3">Historial de Aportes</h2>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Mes</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Monto</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Fecha de Pago</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid var(--color-border)', color: 'var(--color-text-light)' }}>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockUser.historialAportes.map(aporte => (
-                <tr key={aporte.id}>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>{aporte.mes}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>{formatCurrency(aporte.monto)}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>{aporte.fechaPago || '-'}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--color-border)' }}>
-                    {aporte.estado === 'pagado' && <Badge type="success">Pagado</Badge>}
-                    {aporte.estado === 'pendiente' && <Badge type="warning">Pendiente</Badge>}
-                    {aporte.estado === 'atrasado' && <Badge type="danger">Atrasado</Badge>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <SocioSectionCard title="Historial de Aportes">
+        {mockUser.historialAportes.length > 0 ? (
+          <div className="socio-movement-list">
+            {mockUser.historialAportes.map(aporte => {
+              let iconColor: 'success' | 'warning' | 'danger' = 'success';
+              let badgeType: 'success' | 'warning' | 'danger' = 'success';
+              
+              if (aporte.estado === 'pendiente') {
+                iconColor = 'warning';
+                badgeType = 'warning';
+              } else if (aporte.estado === 'atrasado') {
+                iconColor = 'danger';
+                badgeType = 'danger';
+              }
+
+              return (
+                <SocioMovementItem 
+                  key={aporte.id}
+                  icon="fa-piggy-bank"
+                  iconColor={iconColor}
+                  title={`Aporte ${aporte.mes}`}
+                  date={aporte.fechaPago || 'Pendiente'}
+                  amount={formatCurrency(aporte.monto)}
+                  rightAddon={
+                    <SocioStatusBadge type={badgeType}>
+                      {aporte.estado.charAt(0).toUpperCase() + aporte.estado.slice(1)}
+                    </SocioStatusBadge>
+                  }
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <SocioEmptyState 
+            icon="fa-receipt" 
+            title="Aún no hay movimientos" 
+            subtitle="Tus aportes aparecerán aquí una vez registrados." 
+          />
+        )}
+      </SocioSectionCard>
     </div>
   );
 };
