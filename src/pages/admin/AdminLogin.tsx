@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/authService';
 
@@ -8,6 +8,11 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Limpiar sesión al entrar a la vista de login admin para evitar mezcla
+    authService.logout();
+  }, []);
 
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -30,11 +35,9 @@ const AdminLogin: React.FC = () => {
       if (session.rol === 'admin') {
         navigate('/dashboard/admin');
       } else {
-        // Un socio intentó entrar por /admin
-        // Podemos redirigirlo a su dashboard o darle error de permisos.
-        // El requerimiento dice: "Si un admin intenta entrar al portal socio, puede redirigir... pero su acceso principal debe ser /admin"
-        // Redirijamos a /dashboard
-        navigate('/dashboard');
+        // Un socio intentó entrar por /admin usando credenciales válidas (aunque sea mockeado)
+        await authService.logout();
+        setError('Este acceso es solo para administradores.');
       }
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión administrativa');

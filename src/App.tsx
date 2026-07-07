@@ -38,8 +38,8 @@ function App() {
         <Route path="/" element={<Navigate to={session ? (session.rol === 'admin' ? "/dashboard/admin" : "/dashboard") : "/login"} replace />} />
         
         {/* Rutas Públicas */}
-        <Route path="/login" element={session ? <Navigate to={session.rol === 'admin' ? "/dashboard/admin" : "/dashboard"} replace /> : <Login />} />
-        <Route path="/admin" element={session ? <Navigate to={session.rol === 'admin' ? "/dashboard/admin" : "/dashboard"} replace /> : <AdminLogin />} />
+        <Route path="/login" element={(session && session.rol === 'socio') ? <Navigate to="/dashboard" replace /> : <Login />} />
+        <Route path="/admin" element={(session && session.rol === 'admin') ? <Navigate to="/dashboard/admin" replace /> : <AdminLogin />} />
         <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />

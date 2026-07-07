@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 
@@ -8,6 +8,11 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Limpiar sesión al entrar a la vista de login para evitar mezcla
+    authService.logout();
+  }, []);
 
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,7 +24,11 @@ const Login: React.FC = () => {
       setError('Ingresá tu número de cédula.');
       return;
     }
-    if (!/^\d+$/.test(cedula.trim()) && cedula.trim() !== 'admin') {
+    if (cedula.trim() === 'admin') {
+      setError('Este acceso es solo para socios. Ingresá al panel administrativo desde /admin.');
+      return;
+    }
+    if (!/^\d+$/.test(cedula.trim())) {
       setError('La cédula debe contener solo números.');
       return;
     }
