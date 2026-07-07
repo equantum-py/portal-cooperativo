@@ -45,6 +45,7 @@ export const memberService = {
       };
     } else {
       // Implementación Real con Supabase
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { data: socioData, error: socioError } = await supabase.from('socios').select('aporte_mensual_acordado').single();
       if (socioError) throw socioError;
 

@@ -66,6 +66,7 @@ export const loanService = {
       };
     } else {
       // Lógica de calificación real validando atrasos en BD
+      if (!supabase) throw new Error('Supabase no está configurado');
       const { count: atrasos } = await supabase.from('aportes').select('*', { count: 'exact', head: true }).eq('estado', 'atrasado');
       const califica = (atrasos || 0) === 0;
       return {
