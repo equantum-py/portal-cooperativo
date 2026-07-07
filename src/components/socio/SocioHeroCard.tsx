@@ -5,6 +5,7 @@ interface SocioHeroCardProps {
   value: string;
   gradient?: 'primary' | 'success' | 'warning' | 'danger';
   variant?: 'light' | 'dark';
+  children?: React.ReactNode;
 }
 
 const SocioHeroCard: React.FC<SocioHeroCardProps> = ({ label, value, gradient = 'primary', variant = 'light', children }) => {
@@ -13,7 +14,11 @@ const SocioHeroCard: React.FC<SocioHeroCardProps> = ({ label, value, gradient = 
       <div className={`socio-hero-card ${variant} socio-hero-gradient-${gradient}`}>
         <p className="socio-hero-label">{label}</p>
         <h2 className="socio-hero-value">{value}</h2>
-        {children}
+        {children && (
+          <div className="socio-hero-card-content">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );
