@@ -81,6 +81,7 @@ const PrivateLayout: React.FC = () => {
               <MenuLink to="/dashboard/admin/flujo-caja" icon="fa-money-bill-trend-up" label="Flujo de Caja" onClick={closeSidebar} />
               <MenuLink to="/dashboard/admin/ahorros" icon="fa-vault" label="Ahorros" onClick={closeSidebar} />
               <MenuLink to="/dashboard/admin/solicitudes" icon="fa-clipboard-list" label="Solicitudes" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/notificaciones" icon="fa-bullhorn" label="Notificaciones" onClick={closeSidebar} />
               <MenuLink to="/dashboard/admin/reportes" icon="fa-file-pdf" label="Reportes" onClick={closeSidebar} />
               <MenuLink to="/dashboard/admin/importar-exportar" icon="fa-file-excel" label="Importar / Exportar" onClick={closeSidebar} />
               <MenuLink to="/dashboard/admin/configuracion" icon="fa-gear" label="Configuración" onClick={closeSidebar} />

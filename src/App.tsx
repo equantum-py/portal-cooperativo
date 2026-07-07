@@ -16,6 +16,7 @@ import AdminSocios from './pages/admin/AdminSocios';
 import AdminFlujoCaja from './pages/admin/AdminFlujoCaja';
 import AdminReportes from './pages/admin/AdminReportes';
 import AdminImportExport from './pages/admin/AdminImportExport';
+import AdminNotificaciones from './pages/admin/AdminNotificaciones';
 import PlaceholderView from './pages/admin/PlaceholderView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
@@ -59,6 +60,7 @@ function App() {
               <Route path="admin/ahorros" element={<PlaceholderView title="Ahorros de Socios" />} />
               <Route path="admin/solicitudes" element={<PlaceholderView title="Solicitudes Pendientes" />} />
               <Route path="admin/reportes" element={<AdminReportes />} />
+              <Route path="admin/notificaciones" element={<AdminNotificaciones />} />
               <Route path="admin/importar-exportar" element={<AdminImportExport />} />
               <Route path="admin/configuracion" element={<PlaceholderView title="Configuración del Sistema" />} />
             </Route>

@@ -42,5 +42,38 @@ export const demoStore = {
       socios[index].estadoSocio = newStatus;
       demoStore.saveSocios(socios);
     }
+  },
+
+  getAdminNotifications: (): any[] => {
+    const stored = localStorage.getItem('portal_cooperativo_admin_notif');
+    return stored ? JSON.parse(stored) : [];
+  },
+
+  sendNotification: (payload: { destinatario: string, tipo: any, titulo: string, mensaje: string, prioridad: string, canal: string }) => {
+    const notifications = demoStore.getAdminNotifications();
+    const newNotif = { id: Date.now(), fecha: new Date().toLocaleDateString('es-PY'), ...payload };
+    notifications.unshift(newNotif);
+    localStorage.setItem('portal_cooperativo_admin_notif', JSON.stringify(notifications));
+
+    // Reflejar en el socio
+    const socios = demoStore.getSocios();
+    socios.forEach(socio => {
+      let apply = false;
+      if (payload.destinatario === 'todos') apply = true;
+      if (payload.destinatario === 'atrasados' && socio.aportesAtrasadosMeses > 0) apply = true;
+      if (payload.destinatario === 'activos' && socio.estadoSocio === 'Activo') apply = true;
+      if (payload.destinatario === socio.id) apply = true;
+
+      if (apply) {
+        socio.notificaciones.unshift({
+          id: Date.now() + Math.random(),
+          tipo: payload.tipo,
+          titulo: payload.titulo,
+          mensaje: payload.mensaje,
+          fecha: new Date().toLocaleDateString('es-PY')
+        });
+      }
+    });
+    demoStore.saveSocios(socios);
   }
 };
