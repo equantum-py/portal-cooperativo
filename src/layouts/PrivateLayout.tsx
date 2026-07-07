@@ -10,8 +10,9 @@ const PrivateLayout: React.FC = () => {
 
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
+    const wasAdmin = session?.rol === 'admin';
     await authService.logout();
-    navigate('/login');
+    navigate(wasAdmin ? '/admin' : '/login');
   };
 
   const closeSidebar = () => setSidebarOpen(false);

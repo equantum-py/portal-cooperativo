@@ -21,18 +21,15 @@ const AdminLogin: React.FC = () => {
       setError('Ingresá tu contraseña o PIN.');
       return;
     }
+    if (/^\d+$/.test(usuario.trim())) {
+      setError('Este acceso es solo para administradores.');
+      return;
+    }
 
     try {
       setLoading(true);
-      // Reutilizamos el login actual, admin entra con 'admin'
-      const session = await authService.loginAdmin(usuario.trim(), password.trim());
-      if (session.rol === 'admin') {
-        navigate('/dashboard/admin');
-      } else {
-        // Un socio intentó entrar por /admin usando credenciales válidas (aunque sea mockeado)
-        await authService.logout();
-        setError('Este acceso es solo para administradores.');
-      }
+      await authService.loginAdmin(usuario.trim(), password.trim());
+      navigate('/dashboard/admin');
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión administrativa');
     } finally {

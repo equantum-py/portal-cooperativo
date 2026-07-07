@@ -28,56 +28,80 @@ import AdminConfiguracion from './pages/admin/AdminConfiguracion';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
 
-function App() {
+function RootRedirect() {
   const session = authService.getSession();
+  if (!session) return <Navigate to="/login" replace />;
+  if (session.rol === 'admin') return <Navigate to="/dashboard/admin" replace />;
+  return <Navigate to="/dashboard" replace />;
+}
 
+function PublicLogin() {
+  const session = authService.getSession();
+  if (!session) return <Login />;
+  if (session.rol === 'admin') return <Navigate to="/dashboard/admin" replace />;
+  return <Navigate to="/dashboard" replace />;
+}
+
+function PublicAdminLogin() {
+  const session = authService.getSession();
+  if (!session) return <AdminLogin />;
+  if (session.rol === 'socio') return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/dashboard/admin" replace />;
+}
+
+function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirección dinámica desde la raíz */}
-        <Route path="/" element={<Navigate to={session ? (session.rol === 'admin' ? "/dashboard/admin" : "/dashboard") : "/login"} replace />} />
-        
-        {/* Rutas Públicas */}
-        <Route path="/login" element={session ? (session.rol === 'admin' ? <Navigate to="/dashboard/admin" replace /> : <Navigate to="/dashboard" replace />) : <Login />} />
-        <Route path="/admin" element={session ? (session.rol === 'socio' ? <Navigate to="/dashboard" replace /> : <Navigate to="/dashboard/admin" replace />) : <AdminLogin />} />
+        <Route path="/" element={<RootRedirect />} />
+
+        <Route path="/login" element={<PublicLogin />} />
+        <Route path="/admin" element={<PublicAdminLogin />} />
         <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
-        
-        {/* Rutas exclusivas de Socio */}
-        <Route element={<ProtectedRoute allowedRoles={['socio']} />}>
-          <Route path="/dashboard" element={<PrivateLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="aportes" element={<Aportes />} />
-            <Route path="prestamos" element={<Prestamos />} />
-            <Route path="ahorros" element={<Ahorros />} />
-            <Route path="pagos" element={<Pagos />} />
-            <Route path="express" element={<Express />} />
-            <Route path="perfil" element={<Perfil />} />
-            <Route path="notificaciones" element={<Notificaciones />} />
-          </Route>
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['socio']}>
+              <PrivateLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="aportes" element={<Aportes />} />
+          <Route path="prestamos" element={<Prestamos />} />
+          <Route path="ahorros" element={<Ahorros />} />
+          <Route path="pagos" element={<Pagos />} />
+          <Route path="express" element={<Express />} />
+          <Route path="perfil" element={<Perfil />} />
+          <Route path="notificaciones" element={<Notificaciones />} />
         </Route>
 
-        {/* Rutas exclusivas de Admin */}
-        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-          <Route path="/dashboard/admin" element={<PrivateLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="socios" element={<AdminSocios />} />
-            <Route path="aportes" element={<AdminAportes />} />
-            <Route path="prestamos" element={<AdminPrestamos />} />
-            <Route path="cuotas-vencidas" element={<AdminCuotasVencidas />} />
-            <Route path="pagos" element={<AdminPagos />} />
-            <Route path="flujo-caja" element={<AdminFlujoCaja />} />
-            <Route path="ahorros" element={<AdminAhorros />} />
-            <Route path="solicitudes" element={<AdminSolicitudes />} />
-            <Route path="reportes" element={<AdminReportes />} />
-            <Route path="notificaciones" element={<AdminNotificaciones />} />
-            <Route path="importar-exportar" element={<AdminImportExport />} />
-            <Route path="configuracion" element={<AdminConfiguracion />} />
-          </Route>
+        <Route
+          path="/dashboard/admin"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <PrivateLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="socios" element={<AdminSocios />} />
+          <Route path="aportes" element={<AdminAportes />} />
+          <Route path="prestamos" element={<AdminPrestamos />} />
+          <Route path="cuotas-vencidas" element={<AdminCuotasVencidas />} />
+          <Route path="pagos" element={<AdminPagos />} />
+          <Route path="flujo-caja" element={<AdminFlujoCaja />} />
+          <Route path="ahorros" element={<AdminAhorros />} />
+          <Route path="solicitudes" element={<AdminSolicitudes />} />
+          <Route path="notificaciones" element={<AdminNotificaciones />} />
+          <Route path="reportes" element={<AdminReportes />} />
+          <Route path="importar-exportar" element={<AdminImportExport />} />
+          <Route path="configuracion" element={<AdminConfiguracion />} />
         </Route>
-        
-        {/* Fallback */}
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
