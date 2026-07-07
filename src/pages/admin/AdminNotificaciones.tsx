@@ -20,7 +20,7 @@ const AdminNotificaciones: React.FC = () => {
   const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     const plantillas = demoStore.getPlantillas();
-    const p = plantillas.find(x => x.id === val);
+    const p = plantillas.find((x: any) => x.id === val);
     if (p) {
       setForm({ ...form, tipo: p.tipo, titulo: p.titulo, mensaje: p.mensaje });
     }
@@ -70,7 +70,7 @@ const AdminNotificaciones: React.FC = () => {
               <label className="form-label">Usar Plantilla Rápida</label>
               <select className="form-control" onChange={handleTemplateChange} defaultValue="">
                 <option value="" disabled>Seleccioná una plantilla (Opcional)</option>
-                {demoStore.getPlantillas().map(p => (
+                {demoStore.getPlantillas().map((p: any) => (
                   <option key={p.id} value={p.id}>{p.nombre}</option>
                 ))}
               </select>

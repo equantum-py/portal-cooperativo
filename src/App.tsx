@@ -24,7 +24,6 @@ import AdminPagos from './pages/admin/AdminPagos';
 import AdminAhorros from './pages/admin/AdminAhorros';
 import AdminSolicitudes from './pages/admin/AdminSolicitudes';
 import AdminConfiguracion from './pages/admin/AdminConfiguracion';
-import PlaceholderView from './pages/admin/PlaceholderView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
 

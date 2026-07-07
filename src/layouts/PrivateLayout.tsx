@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { appConfig } from '../config/appConfig';
+import { demoStore } from '../services/demoStore';
 
 const PrivateLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
