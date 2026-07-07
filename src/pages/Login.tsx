@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     }
     try {
       setLoading(true);
-      const session = await authService.loginSocio(cedula.trim());
+      await authService.loginSocio(cedula.trim());
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
