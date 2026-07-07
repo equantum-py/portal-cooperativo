@@ -16,6 +16,9 @@ const PrivateLayout: React.FC = () => {
 
   const closeSidebar = () => setSidebarOpen(false);
 
+  const isAdmin = session?.rol === 'admin';
+  const headerName = isAdmin ? 'Administrador Principal' : (session?.nombre || 'Juan Pérez');
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       
@@ -30,7 +33,7 @@ const PrivateLayout: React.FC = () => {
         ></div>
       )}
 
-      {/* Sidebar - Ahora con estilo Clay (sombras en vez de borde) */}
+      {/* Sidebar - Estilo Clay */}
       <aside 
         style={{
           width: '260px', backgroundColor: 'var(--color-white)',
@@ -48,26 +51,40 @@ const PrivateLayout: React.FC = () => {
             </div>
             <div>
               <h2 className="title-md" style={{ margin: 0, fontSize: '1.1rem' }}>{appConfig.nombreInstitucion}</h2>
-              <p className="text-muted" style={{ fontSize: '0.8rem', margin: 0 }}>{session?.nombre || 'Usuario'}</p>
+              <p className="text-muted" style={{ fontSize: '0.8rem', margin: 0, fontWeight: isAdmin ? 600 : 400, color: isAdmin ? 'var(--color-primary)' : '' }}>{headerName}</p>
             </div>
           </div>
         </div>
         
         <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem 0' }}>
-          <MenuLink to="/dashboard" icon="fa-house" label="Inicio" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/aportes" icon="fa-piggy-bank" label="Aportes" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/prestamos" icon="fa-hand-holding-dollar" label="Préstamos" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/ahorros" icon="fa-vault" label="Ahorros" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/pagos" icon="fa-file-invoice-dollar" label="Pagos Pendientes" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/express" icon="fa-bolt" label="Préstamo Express" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/perfil" icon="fa-user" label="Perfil" onClick={closeSidebar} />
-          <MenuLink to="/dashboard/notificaciones" icon="fa-bell" label="Notificaciones" onClick={closeSidebar} />
-          
-          {session?.rol === 'admin' && (
-            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.03)' }}>
-              <p style={{ padding: '0 1.5rem', fontSize: '0.8rem', color: 'var(--color-text-light)', fontWeight: 600, textTransform: 'uppercase' }}>Administración</p>
-              <MenuLink to="/dashboard/admin" icon="fa-screwdriver-wrench" label="Panel Admin" onClick={closeSidebar} />
-            </div>
+          {!isAdmin ? (
+            // MENÚ SOCIO
+            <>
+              <MenuLink to="/dashboard" icon="fa-house" label="Inicio" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/aportes" icon="fa-piggy-bank" label="Aportes" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/prestamos" icon="fa-hand-holding-dollar" label="Préstamos" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/ahorros" icon="fa-vault" label="Ahorros" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/pagos" icon="fa-file-invoice-dollar" label="Pagos Pendientes" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/express" icon="fa-bolt" label="Préstamo Express" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/perfil" icon="fa-user" label="Perfil" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/notificaciones" icon="fa-bell" label="Notificaciones" onClick={closeSidebar} />
+            </>
+          ) : (
+            // MENÚ ADMINISTRADOR
+            <>
+              <MenuLink to="/dashboard/admin" icon="fa-chart-line" label="Panel de Control" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/socios" icon="fa-users" label="Socios" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/aportes" icon="fa-piggy-bank" label="Aportes Mensuales" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/prestamos" icon="fa-hand-holding-dollar" label="Préstamos" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/cuotas-vencidas" icon="fa-calendar-xmark" label="Cuotas Vencidas" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/pagos" icon="fa-file-invoice-dollar" label="Pagos" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/flujo-caja" icon="fa-money-bill-trend-up" label="Flujo de Caja" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/ahorros" icon="fa-vault" label="Ahorros" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/solicitudes" icon="fa-clipboard-list" label="Solicitudes" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/reportes" icon="fa-file-pdf" label="Reportes" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/importar-exportar" icon="fa-file-excel" label="Importar / Exportar" onClick={closeSidebar} />
+              <MenuLink to="/dashboard/admin/configuracion" icon="fa-gear" label="Configuración" onClick={closeSidebar} />
+            </>
           )}
         </nav>
         
@@ -92,7 +109,7 @@ const PrivateLayout: React.FC = () => {
         width: '100%'
       }}>
         
-        {/* Mobile Topbar - Ajustado a estilo clay */}
+        {/* Mobile Topbar - Estilo clay */}
         <div style={{ 
           display: window.innerWidth <= 768 ? 'flex' : 'none', 
           alignItems: 'center', justifyContent: 'space-between',
@@ -121,7 +138,7 @@ const MenuLink = ({ to, icon, label, onClick }: { to: string, icon: string, labe
     <div style={{ padding: '0.2rem 1rem' }}>
       <NavLink 
         to={to} 
-        end={to === "/dashboard"}
+        end={to === "/dashboard" || to === "/dashboard/admin"}
         onClick={onClick}
         style={({ isActive }) => ({
           display: 'flex', alignItems: 'center', padding: '0.85rem 1rem', 

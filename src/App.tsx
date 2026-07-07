@@ -11,7 +11,12 @@ import Pagos from './pages/Pagos';
 import Express from './pages/Express';
 import Perfil from './pages/Perfil';
 import Notificaciones from './pages/Notificaciones';
-import AdminPanel from './pages/AdminPanel';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminSocios from './pages/admin/AdminSocios';
+import AdminFlujoCaja from './pages/admin/AdminFlujoCaja';
+import AdminReportes from './pages/admin/AdminReportes';
+import AdminImportExport from './pages/admin/AdminImportExport';
+import PlaceholderView from './pages/admin/PlaceholderView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
 
@@ -22,16 +27,17 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Redirección dinámica desde la raíz */}
-        <Route path="/" element={<Navigate to={session ? "/dashboard" : "/login"} replace />} />
+        <Route path="/" element={<Navigate to={session ? (session.rol === 'admin' ? "/dashboard/admin" : "/dashboard") : "/login"} replace />} />
         
         {/* Rutas Públicas */}
-        <Route path="/login" element={session ? <Navigate to="/dashboard" replace /> : <Login />} />
+        <Route path="/login" element={session ? <Navigate to={session.rol === 'admin' ? "/dashboard/admin" : "/dashboard"} replace /> : <Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         
         {/* Rutas Privadas (Socio y Admin) */}
         <Route element={<ProtectedRoute allowedRoles={['socio', 'admin']} />}>
           <Route path="/dashboard" element={<PrivateLayout />}>
+            {/* Rutas de Socio */}
             <Route index element={<Dashboard />} />
             <Route path="aportes" element={<Aportes />} />
             <Route path="prestamos" element={<Prestamos />} />
@@ -43,7 +49,18 @@ function App() {
             
             {/* Rutas exclusivas de Admin */}
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-              <Route path="admin" element={<AdminPanel />} />
+              <Route path="admin" element={<AdminDashboard />} />
+              <Route path="admin/socios" element={<AdminSocios />} />
+              <Route path="admin/aportes" element={<PlaceholderView title="Aportes Mensuales" />} />
+              <Route path="admin/prestamos" element={<PlaceholderView title="Préstamos Otorgados" />} />
+              <Route path="admin/cuotas-vencidas" element={<PlaceholderView title="Cuotas Vencidas" />} />
+              <Route path="admin/pagos" element={<PlaceholderView title="Registro de Pagos" />} />
+              <Route path="admin/flujo-caja" element={<AdminFlujoCaja />} />
+              <Route path="admin/ahorros" element={<PlaceholderView title="Ahorros de Socios" />} />
+              <Route path="admin/solicitudes" element={<PlaceholderView title="Solicitudes Pendientes" />} />
+              <Route path="admin/reportes" element={<AdminReportes />} />
+              <Route path="admin/importar-exportar" element={<AdminImportExport />} />
+              <Route path="admin/configuracion" element={<PlaceholderView title="Configuración del Sistema" />} />
             </Route>
           </Route>
         </Route>
