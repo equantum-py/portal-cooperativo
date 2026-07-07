@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { formatCurrency, Socio } from '../data/mockData';
 import { memberService } from '../services/memberService';
+import { authService } from '../services/authService';
+import { Navigate } from 'react-router-dom';
 import StatCard from '../components/StatCard';
 import Badge from '../components/Badge';
 
 const Dashboard: React.FC = () => {
   const [data, setData] = useState<Socio | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const session = authService.getSession();
+  if (session?.rol === 'admin') {
+    return <Navigate to="/dashboard/admin" replace />;
+  }
 
   useEffect(() => {
     const fetchData = async () => {

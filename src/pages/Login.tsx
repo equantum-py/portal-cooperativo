@@ -30,8 +30,12 @@ const Login: React.FC = () => {
 
     try {
       setLoading(true);
-      await authService.login(cedula.trim(), password.trim());
-      navigate('/dashboard');
+      const session = await authService.login(cedula.trim(), password.trim());
+      if (session.rol === 'admin') {
+        navigate('/dashboard/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {
