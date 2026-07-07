@@ -1,7 +1,7 @@
 import { appConfig } from '../config/appConfig';
+import { supabase } from '../lib/supabaseClient';
 
-// Simula un retardo de red
-export const delay = (ms: number = appConfig.simularRetardoAPI) =>
+export const delay = (ms: number = appConfig.simularRetardoAPI) => 
   new Promise(resolve => setTimeout(resolve, ms));
 
 export interface UserSession {
@@ -13,58 +13,68 @@ export interface UserSession {
 
 export const authService = {
   async login(cedula: string, password: string): Promise<UserSession> {
-    await delay();
+    if (appConfig.modoDemo) {
+      await delay();
+      if (cedula === '1234567') {
+        const session: UserSession = { cedula, nombre: 'Juan Pérez', token: 'fake-jwt-token-socio', rol: 'socio' };
+        localStorage.setItem('userSession', JSON.stringify(session));
+        return session;
+      }
+      if (cedula === 'admin') {
+        const session: UserSession = { cedula, nombre: 'Administrador Principal', token: 'fake-jwt-token-admin', rol: 'admin' };
+        localStorage.setItem('userSession', JSON.stringify(session));
+        return session;
+      }
+      throw new Error('Cédula o contraseña incorrecta');
+    } else {
+      // Implementación Real con Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: `${cedula}@portalcooperativo.local`, // o usar custom auth
+        password: password,
+      });
 
-    // Por ahora el login es simulado.
-    // Usamos password para evitar error de TypeScript y dejar preparada la lógica futura.
-    if (!password.trim()) {
-      throw new Error('Ingresá tu contraseña');
-    }
+      if (error) throw new Error(error.message);
 
-    // Validación de prueba estática. En producción esto irá al backend.
-    if (cedula === '1234567') {
+      // Obtener datos del perfil desde la tabla socios
+      const { data: profileData, error: profileError } = await supabase
+        .from('socios')
+        .select('cedula, nombre_completo, rol')
+        .eq('user_id', data.user.id)
+        .single();
+
+      if (profileError || !profileData) throw new Error('Error al obtener perfil del socio');
+
       const session: UserSession = {
-        cedula,
-        nombre: 'Juan Pérez',
-        token: 'fake-jwt-token-socio',
-        rol: 'socio'
+        cedula: profileData.cedula,
+        nombre: profileData.nombre_completo,
+        token: data.session.access_token,
+        rol: profileData.rol as 'socio' | 'admin'
       };
-
+      
       localStorage.setItem('userSession', JSON.stringify(session));
       return session;
     }
-
-    if (cedula === 'admin') {
-      const session: UserSession = {
-        cedula,
-        nombre: 'Administrador Principal',
-        token: 'fake-jwt-token-admin',
-        rol: 'admin'
-      };
-
-      localStorage.setItem('userSession', JSON.stringify(session));
-      return session;
-    }
-
-    throw new Error('Cédula o contraseña incorrecta');
   },
 
   async logout(): Promise<void> {
-    await delay(300);
-    localStorage.removeItem('userSession');
+    if (appConfig.modoDemo) {
+      await delay(300);
+      localStorage.removeItem('userSession');
+    } else {
+      await supabase.auth.signOut();
+      localStorage.removeItem('userSession');
+    }
   },
 
   getSession(): UserSession | null {
     const data = localStorage.getItem('userSession');
-
     if (data) {
       try {
         return JSON.parse(data) as UserSession;
-      } catch {
+      } catch (e) {
         return null;
       }
     }
-
     return null;
   },
 

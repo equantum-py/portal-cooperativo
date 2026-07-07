@@ -1,4 +1,7 @@
 export const appConfig = {
+  // Modo de funcionamiento ('true' usa datos simulados, 'false' usa Supabase real)
+  modoDemo: true,
+
   // Información de la Cooperativa
   nombreApp: "Portal Cooperativo",
   nombreInstitucion: "Portal Cooperativo",
@@ -17,7 +20,6 @@ export const appConfig = {
     telefonoCallCenter: "021 000 000"
   },
 
-  // Configuración de la App
-  apiBaseUrl: "https://api.portalcooperativo.com/v1", // Placeholder para el futuro backend
-  simularRetardoAPI: 800 // Milisegundos de delay simulado
+  // Configuración de delay para el modo demo
+  simularRetardoAPI: 800 
 };

@@ -1,15 +1,29 @@
 import { delay } from './authService';
 import { mockUser } from '../data/mockData';
+import { appConfig } from '../config/appConfig';
+import { supabase } from '../lib/supabaseClient';
 
 export const paymentService = {
   async getPendingPayments(): Promise<{
     totalPendiente: number;
     fechaVencimiento: string;
   }> {
-    await delay();
-    return {
-      totalPendiente: mockUser.pagoPendiente,
-      fechaVencimiento: mockUser.fechaProximoVencimiento
-    };
+    if (appConfig.modoDemo) {
+      await delay();
+      return {
+        totalPendiente: mockUser.pagoPendiente,
+        fechaVencimiento: mockUser.fechaProximoVencimiento
+      };
+    } else {
+      // Implementación Real con Supabase
+      const { data: pagos, error } = await supabase.from('pagos').select('*').eq('estado', 'pendiente');
+      if (error) throw error;
+      
+      const total = pagos.reduce((sum, p) => sum + p.monto_total, 0);
+      return {
+        totalPendiente: total,
+        fechaVencimiento: pagos.length > 0 ? pagos[0].fecha_pago : '-' // Simplificado
+      };
+    }
   }
 };
