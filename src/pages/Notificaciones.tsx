@@ -4,10 +4,10 @@ import { authService } from '../services/authService';
 import { Notificacion } from '../data/mockData';
 import SocioPageHeader from '../components/socio/SocioPageHeader';
 import SocioEmptyState from '../components/socio/SocioEmptyState';
-import SocioStatusBadge from '../components/socio/SocioStatusBadge';
 
 const Notificaciones: React.FC = () => {
   const [notificaciones, setNotificaciones] = useState<Notificacion[]>([]);
+  const [filter, setFilter] = useState('Todas');
 
   useEffect(() => {
     const session = authService.getSession();
@@ -18,69 +18,75 @@ const Notificaciones: React.FC = () => {
     }
   }, []);
 
+  const chips = ['Todas', 'Mora', 'Aportes', 'Préstamos', 'Beneficios'];
+
   return (
-    <div className="socio-page">
+    <div className="socio-app-page">
       <SocioPageHeader 
         title="Notificaciones" 
-        subtitle="Avisos importantes de la cooperativa" 
+        subtitle="Centro de mensajes y alertas" 
       />
 
       <div className="socio-chip-list">
-        <div className="socio-chip active">Todas</div>
-        <div className="socio-chip">Mora</div>
-        <div className="socio-chip">Aportes</div>
-        <div className="socio-chip">Préstamos</div>
-        <div className="socio-chip">Beneficios</div>
+        {chips.map(chip => (
+          <div 
+            key={chip} 
+            className={`socio-chip ${filter === chip ? 'active' : ''}`}
+            onClick={() => setFilter(chip)}
+          >
+            {chip}
+          </div>
+        ))}
       </div>
       
-      <div style={{ padding: '0 1rem' }}>
+      <div style={{ padding: '0 1.25rem' }}>
         {notificaciones.length === 0 ? (
           <SocioEmptyState 
             icon="fa-bell-slash" 
-            title="Sin notificaciones" 
-            subtitle="Te avisaremos cuando haya novedades importantes." 
+            title="Bandeja Vacía" 
+            subtitle="No tenés notificaciones pendientes." 
           />
         ) : (
           notificaciones.map((notif) => {
             let icon = '';
             let iconColor = '';
-            let badgeType: 'success' | 'warning' | 'danger' | 'info' = 'info';
+            let bgLight = '';
 
             if (notif.tipo === 'warning') { 
               icon = 'fa-triangle-exclamation'; 
-              iconColor = 'var(--color-warning)'; 
-              badgeType = 'warning';
+              iconColor = '#f59e0b'; 
+              bgLight = 'rgba(245, 158, 11, 0.1)';
             } else if (notif.tipo === 'danger') { 
               icon = 'fa-circle-xmark'; 
-              iconColor = 'var(--color-danger)'; 
-              badgeType = 'danger';
+              iconColor = '#ef4444'; 
+              bgLight = 'rgba(239, 68, 68, 0.1)';
             } else if (notif.tipo === 'success') { 
               icon = 'fa-circle-check'; 
-              iconColor = 'var(--color-success)'; 
-              badgeType = 'success';
+              iconColor = '#10b981'; 
+              bgLight = 'rgba(16, 185, 129, 0.1)';
             } else { 
-              icon = 'fa-circle-info'; 
-              iconColor = 'var(--color-primary)'; 
-              badgeType = 'info';
+              icon = 'fa-bell'; 
+              iconColor = '#2563eb'; 
+              bgLight = 'rgba(37, 99, 235, 0.1)';
             }
 
             return (
-              <div key={notif.id} className="socio-card" style={{ padding: '1.25rem', marginBottom: '1rem', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '1rem', right: '1.25rem' }}>
-                  <SocioStatusBadge type={badgeType}>{notif.fecha}</SocioStatusBadge>
-                </div>
-                
+              <div key={notif.id} className="socio-finance-card" style={{ padding: '1.25rem', marginBottom: '1rem', position: 'relative', margin: '0 0 1rem 0' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <div style={{ 
                     fontSize: '1.25rem', color: iconColor, marginRight: '1rem', 
-                    backgroundColor: 'rgba(0,0,0,0.03)', width: '40px', height: '40px', 
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' 
+                    backgroundColor: bgLight, width: '46px', height: '46px', 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '14px',
+                    flexShrink: 0
                   }}>
                     <i className={`fa-solid ${icon}`}></i>
                   </div>
-                  <div style={{ flex: 1, paddingRight: '4rem' }}>
-                    <h4 style={{ margin: '0 0 0.25rem', fontSize: '1rem', fontWeight: 600 }}>{notif.titulo}</h4>
-                    <p style={{ margin: 0, color: 'var(--color-text-light)', fontSize: '0.9rem', lineHeight: 1.5 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{notif.titulo}</h4>
+                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', whiteSpace: 'nowrap', marginLeft: '0.5rem' }}>{notif.fecha}</span>
+                    </div>
+                    <p style={{ margin: 0, color: '#64748b', fontSize: '0.9rem', lineHeight: 1.5 }}>
                       {notif.mensaje}
                     </p>
                   </div>

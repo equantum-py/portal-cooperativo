@@ -3,12 +3,15 @@ import { formatCurrency, Socio } from '../data/mockData';
 import { memberService } from '../services/memberService';
 import SocioAppHeader from '../components/socio/SocioAppHeader';
 import QuickActions from '../components/socio/QuickActions';
-import Badge from '../components/Badge';
+import SocioHeroCard from '../components/socio/SocioHeroCard';
+import SocioFinanceCard from '../components/socio/SocioFinanceCard';
+import SocioMovementItem from '../components/socio/SocioMovementItem';
+import SocioStatusBadge from '../components/socio/SocioStatusBadge';
+import SocioInfoRow from '../components/socio/SocioInfoRow';
 
 const Dashboard: React.FC = () => {
   const [data, setData] = useState<Socio | null>(null);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +33,10 @@ const Dashboard: React.FC = () => {
 
   if (!data) return <div>Error cargando datos.</div>;
 
+  const isAtrasado = data.aportesAtrasadosMeses > 0 || data.cuotasVencidas > 0;
+
   return (
-    <div className="socio-desktop-content">
+    <div className="socio-app-page">
       <div className="mobile-only">
         <SocioAppHeader nombre={data.nombre} />
       </div>
@@ -41,75 +46,81 @@ const Dashboard: React.FC = () => {
         <p className="text-muted">Este es el resumen de tu estado como socio.</p>
       </div>
 
-      <div className="socio-balance-card">
-        <p className="socio-balance-title">Total Ahorrado</p>
-        <h2 className="socio-balance-amount">{formatCurrency(data.totalAhorrado)}</h2>
-        <div style={{ position: 'absolute', right: '1.5rem', top: '1.5rem', opacity: 0.8 }}>
-          <i className="fa-solid fa-vault" style={{ fontSize: '2rem' }}></i>
+      <SocioHeroCard 
+        label="Total Ahorrado" 
+        value={formatCurrency(data.totalAhorrado)} 
+        gradient="primary"
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
+          <div>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Próximo Vencimiento</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem' }}>{data.fechaProximoVencimiento}</p>
+          </div>
+          {isAtrasado ? (
+            <span style={{ backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
+              <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '0.5rem' }}></i>
+              Deuda Pendiente
+            </span>
+          ) : (
+            <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>
+              Al día
+            </span>
+          )}
         </div>
-      </div>
+      </SocioHeroCard>
 
       <QuickActions />
 
-      <div className="socio-mobile-card">
-        <h3 className="title-md" style={{ marginBottom: '1.25rem', fontSize: '1.1rem' }}>Estado Financiero</h3>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-          <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Pagos Pendientes</p>
-            <p style={{ fontWeight: 600, margin: 0, color: 'var(--color-danger)' }}>{formatCurrency(data.pagoPendiente)}</p>
-          </div>
-          <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-danger)', width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             <i className="fa-solid fa-file-invoice-dollar"></i>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-          <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Aportes Atrasados</p>
-            <p style={{ fontWeight: 600, margin: 0 }}>{data.aportesAtrasadosMeses > 0 ? `${data.aportesAtrasadosMeses} meses` : 'Al día'}</p>
-          </div>
-          <div style={{ backgroundColor: data.aportesAtrasadosMeses > 0 ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: data.aportesAtrasadosMeses > 0 ? 'var(--color-warning)' : 'var(--color-success)', width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             <i className="fa-solid fa-clock-rotate-left"></i>
-          </div>
-        </div>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Cuotas Vencidas</p>
-            <p style={{ fontWeight: 600, margin: 0 }}>{data.cuotasVencidas > 0 ? `${data.cuotasVencidas} cuotas` : '0'}</p>
-          </div>
-          <div style={{ backgroundColor: data.cuotasVencidas > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: data.cuotasVencidas > 0 ? 'var(--color-danger)' : 'var(--color-success)', width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             <i className="fa-solid fa-calendar-xmark"></i>
-          </div>
-        </div>
+      <div style={{ padding: '0 1.25rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+          Estado Financiero
+        </h3>
       </div>
 
-      <div className="socio-mobile-card">
-        <h3 className="title-md" style={{ marginBottom: '1.25rem', fontSize: '1.1rem' }}>Información General</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Próximo Vencimiento</p>
-            <p style={{ fontWeight: 500, fontSize: '0.95rem' }}>{data.fechaProximoVencimiento}</p>
-          </div>
-          <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Préstamo Express</p>
-            <div>
-              {data.calificaPrestamoExpress 
-                ? <Badge type="success">Califica</Badge>
-                : <Badge type="warning">En revisión</Badge>}
-            </div>
-          </div>
-          <div style={{ marginTop: '0.5rem' }}>
-            <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Número de Socio</p>
-            <p style={{ fontWeight: 500, fontSize: '0.95rem' }}>{data.numeroSocio}</p>
-          </div>
-          <div style={{ marginTop: '0.5rem' }}>
-            <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Cédula</p>
-            <p style={{ fontWeight: 500, fontSize: '0.95rem' }}>{data.cedula}</p>
-          </div>
+      <SocioFinanceCard>
+        <div className="socio-movement-list">
+          <SocioMovementItem 
+            icon="fa-file-invoice-dollar"
+            iconColor="danger"
+            title="Pagos Pendientes"
+            date="Total a pagar hoy"
+            amount={formatCurrency(data.pagoPendiente)}
+            amountColor="danger"
+          />
+          <SocioMovementItem 
+            icon="fa-clock-rotate-left"
+            iconColor={data.aportesAtrasadosMeses > 0 ? 'warning' : 'success'}
+            title="Aportes"
+            date="Estado de cuenta capital"
+            amount={data.aportesAtrasadosMeses > 0 ? `${data.aportesAtrasadosMeses} meses` : 'Al día'}
+            amountColor="text"
+          />
+          <SocioMovementItem 
+            icon="fa-calendar-xmark"
+            iconColor={data.cuotasVencidas > 0 ? 'danger' : 'success'}
+            title="Préstamos"
+            date="Cuotas vencidas"
+            amount={data.cuotasVencidas > 0 ? `${data.cuotasVencidas} cuotas` : '0 cuotas'}
+            amountColor={data.cuotasVencidas > 0 ? 'danger' : 'text'}
+          />
         </div>
+      </SocioFinanceCard>
+
+      <div style={{ padding: '0 1.25rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+          Información General
+        </h3>
       </div>
+
+      <SocioFinanceCard>
+        <SocioInfoRow label="Cédula" value={data.cedula} />
+        <SocioInfoRow label="Número de Socio" value={`#${data.numeroSocio}`} />
+        <SocioInfoRow label="Préstamo Express" value={
+          data.calificaPrestamoExpress 
+            ? <SocioStatusBadge type="success">Califica</SocioStatusBadge>
+            : <SocioStatusBadge type="warning">En Revisión</SocioStatusBadge>
+        } />
+      </SocioFinanceCard>
     </div>
   );
 };

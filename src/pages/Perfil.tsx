@@ -1,86 +1,77 @@
 import React from 'react';
 import { mockUser } from '../data/mockData';
 import SocioPageHeader from '../components/socio/SocioPageHeader';
-import SocioSectionCard from '../components/socio/SocioSectionCard';
+import SocioFinanceCard from '../components/socio/SocioFinanceCard';
 import SocioStatusBadge from '../components/socio/SocioStatusBadge';
+import SocioInfoRow from '../components/socio/SocioInfoRow';
 
 const Perfil: React.FC = () => {
   const firstName = mockUser.nombre.split(' ')[0];
   const initial = firstName.charAt(0).toUpperCase();
 
   return (
-    <div className="socio-page">
-      <SocioPageHeader title="Mi Perfil" />
-      
-      <div style={{ textAlign: 'center', padding: '1rem 0 2rem' }}>
-        <div style={{ 
-          width: 80, height: 80, backgroundColor: 'var(--color-primary)', color: 'white', 
-          borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', 
-          fontSize: '2.5rem', margin: '0 auto 1rem', boxShadow: '0 4px 15px rgba(10,32,83,0.15)' 
-        }}>
-          {initial}
+    <div className="socio-app-page">
+      <div style={{ 
+        background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', 
+        paddingBottom: '3rem',
+        borderBottomLeftRadius: '32px',
+        borderBottomRightRadius: '32px',
+        marginBottom: '-2rem'
+      }}>
+        <SocioPageHeader title="Perfil" dark />
+        <div style={{ textAlign: 'center', padding: '0 1.5rem 1rem' }}>
+          <div style={{ 
+            width: 88, height: 88, backgroundColor: 'var(--color-white)', color: 'var(--color-primary)', 
+            borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+            fontSize: '2.5rem', fontWeight: 800, margin: '0 auto 1rem', boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
+            border: '4px solid rgba(255,255,255,0.2)'
+          }}>
+            {initial}
+          </div>
+          <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.5rem', fontWeight: 700, color: 'white' }}>{mockUser.nombre}</h2>
+          <SocioStatusBadge type="success">SOCIO {mockUser.estadoSocio.toUpperCase()}</SocioStatusBadge>
         </div>
-        <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.25rem', fontWeight: 600 }}>{mockUser.nombre}</h2>
-        <SocioStatusBadge type="success">{mockUser.estadoSocio.toUpperCase()}</SocioStatusBadge>
       </div>
       
-      <SocioSectionCard title="Datos Personales">
-        <div className="socio-grid-2">
-          <div className="socio-data-block">
-            <p>Cédula de Identidad</p>
-            <p>{mockUser.cedula}</p>
-          </div>
-          <div className="socio-data-block">
-            <p>Teléfono</p>
-            <p>{mockUser.telefono}</p>
-          </div>
-          <div className="socio-data-block" style={{ gridColumn: '1 / -1' }}>
-            <p>Correo Electrónico</p>
-            <p>{mockUser.email}</p>
-          </div>
-          <div className="socio-data-block" style={{ gridColumn: '1 / -1' }}>
-            <p>Dirección</p>
-            <p>{mockUser.direccion}</p>
-          </div>
-        </div>
-      </SocioSectionCard>
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <SocioFinanceCard title="Datos Personales">
+          <SocioInfoRow label="Cédula" value={mockUser.cedula} />
+          <SocioInfoRow label="Teléfono" value={mockUser.telefono} />
+          <SocioInfoRow label="Correo Electrónico" value={<span style={{ fontSize: '0.85rem' }}>{mockUser.email}</span>} />
+          <SocioInfoRow label="Dirección" value={<span style={{ fontSize: '0.85rem' }}>{mockUser.direccion}</span>} />
+        </SocioFinanceCard>
 
-      <SocioSectionCard title="Datos de Socio">
-        <div className="socio-grid-2">
-          <div className="socio-data-block">
-            <p>Número de Socio</p>
-            <p>{mockUser.numeroSocio}</p>
-          </div>
-          <div className="socio-data-block">
-            <p>Fecha de Ingreso</p>
-            <p>{mockUser.fechaIngreso}</p>
-          </div>
-        </div>
-      </SocioSectionCard>
+        <SocioFinanceCard title="Datos Cooperativos">
+          <SocioInfoRow label="Número de Socio" value={`#${mockUser.numeroSocio}`} />
+          <SocioInfoRow label="Fecha de Ingreso" value={mockUser.fechaIngreso} />
+        </SocioFinanceCard>
 
-      <SocioSectionCard title="Seguridad y Acceso">
-        <div className="socio-movement-list">
-          <button className="socio-movement-item" style={{ background: 'none', border: 'none', borderBottom: '1px solid rgba(0,0,0,0.05)', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => alert('En desarrollo')}>
-            <div className="socio-movement-icon" style={{ backgroundColor: 'rgba(0,0,0,0.03)', color: 'var(--color-text)' }}>
-              <i className="fa-solid fa-pen"></i>
-            </div>
-            <div className="socio-movement-content">
-              <p className="socio-movement-title">Actualizar datos personales</p>
-            </div>
-            <i className="fa-solid fa-chevron-right text-muted"></i>
-          </button>
-          
-          <button className="socio-movement-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => alert('En desarrollo')}>
-            <div className="socio-movement-icon" style={{ backgroundColor: 'rgba(0,0,0,0.03)', color: 'var(--color-text)' }}>
-              <i className="fa-solid fa-headset"></i>
-            </div>
-            <div className="socio-movement-content">
-              <p className="socio-movement-title">Contactar administración</p>
-            </div>
-            <i className="fa-solid fa-chevron-right text-muted"></i>
-          </button>
-        </div>
-      </SocioSectionCard>
+        <SocioFinanceCard title="Seguridad y Contacto">
+          <div className="socio-movement-list">
+            <button className="socio-movement-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', padding: '1rem 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }} onClick={() => alert('En desarrollo')}>
+              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: 'rgba(37, 99, 235, 0.1)', color: '#2563eb' }}>
+                <i className="fa-solid fa-user-pen"></i>
+              </div>
+              <div className="socio-movement-body">
+                <p className="socio-movement-title">Actualizar Datos</p>
+                <p className="socio-movement-desc">Modificar celular o correo</p>
+              </div>
+              <i className="fa-solid fa-chevron-right" style={{ color: '#cbd5e1' }}></i>
+            </button>
+            
+            <button className="socio-movement-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', padding: '1rem 0' }} onClick={() => alert('En desarrollo')}>
+              <div className="socio-movement-icon-wrapper" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
+                <i className="fa-solid fa-headset"></i>
+              </div>
+              <div className="socio-movement-body">
+                <p className="socio-movement-title">Centro de Ayuda</p>
+                <p className="socio-movement-desc">Contactar con soporte</p>
+              </div>
+              <i className="fa-solid fa-chevron-right" style={{ color: '#cbd5e1' }}></i>
+            </button>
+          </div>
+        </SocioFinanceCard>
+      </div>
     </div>
   );
 };

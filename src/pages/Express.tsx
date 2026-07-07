@@ -1,66 +1,90 @@
 import React from 'react';
 import { mockUser } from '../data/mockData';
 import SocioPageHeader from '../components/socio/SocioPageHeader';
-import SocioSectionCard from '../components/socio/SocioSectionCard';
+import SocioHeroCard from '../components/socio/SocioHeroCard';
+import SocioFinanceCard from '../components/socio/SocioFinanceCard';
+import SocioMovementItem from '../components/socio/SocioMovementItem';
+import { SocioActionGrid, SocioActionPill } from '../components/socio/SocioActionGrid';
 
 const Express: React.FC = () => {
   return (
-    <div className="socio-page">
+    <div className="socio-app-page">
       <SocioPageHeader 
         title="Préstamo Express" 
-        subtitle="Dinero rápido y sin papeleos" 
+        subtitle="Adelantos de efectivo instantáneos" 
       />
       
       {mockUser.calificaPrestamoExpress ? (
-        <div className="socio-balance-card" style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 10px 25px -5px rgba(16, 185, 129, 0.4)', textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-          <div style={{ width: 64, height: 64, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', margin: '0 auto 1.5rem' }}>
-            <i className="fa-solid fa-bolt"></i>
+        <SocioHeroCard 
+          label="Pre-Aprobado"
+          value="Gs. 1.000.000"
+          gradient="success"
+        >
+          <div style={{ marginTop: '1rem', paddingBottom: '0.5rem' }}>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', opacity: 0.9 }}>
+              Calificás para un retiro inmediato por tu excelente historial.
+            </p>
           </div>
-          <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.5rem', fontWeight: 700 }}>¡Calificás ahora!</h2>
-          <p style={{ opacity: 0.9, fontSize: '0.9rem', marginBottom: '2rem', maxWidth: '280px', margin: '0 auto 2rem' }}>
-            Tenés pre-aprobado un préstamo express gracias a tu excelente historial de aportes.
-          </p>
-          <button className="socio-cta-btn socio-cta-secondary" style={{ color: 'var(--color-success)' }} onClick={() => alert('Funcionalidad de solicitud en desarrollo.')}>
-            Solicitar Adelanto
-          </button>
-        </div>
+        </SocioHeroCard>
       ) : (
-        <div className="socio-balance-card" style={{ background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)', boxShadow: '0 10px 25px -5px rgba(245, 158, 11, 0.4)', textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-          <div style={{ width: 64, height: 64, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', margin: '0 auto 1.5rem' }}>
-            <i className="fa-solid fa-clock-rotate-left"></i>
+        <SocioHeroCard 
+          label="En Revisión"
+          value="Gs. 0"
+          gradient="warning"
+        >
+          <div style={{ marginTop: '1rem', paddingBottom: '0.5rem' }}>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.9rem', opacity: 0.9 }}>
+              Necesitás regularizar tus aportes para acceder a este beneficio.
+            </p>
           </div>
-          <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.5rem', fontWeight: 700 }}>En Revisión</h2>
-          <p style={{ opacity: 0.9, fontSize: '0.9rem', marginBottom: '2rem', maxWidth: '280px', margin: '0 auto 2rem' }}>
-            Para acceder a este beneficio, necesitás regularizar tus aportes o cuotas pendientes.
-          </p>
-          <button className="socio-cta-btn socio-cta-secondary" style={{ color: 'var(--color-warning)' }} onClick={() => window.location.href='/dashboard/aportes'}>
-            Regularizar Estado
-          </button>
-        </div>
+        </SocioHeroCard>
       )}
-      
-      <SocioSectionCard title="Beneficios">
+
+      {mockUser.calificaPrestamoExpress ? (
+        <SocioActionGrid>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <SocioActionPill primary icon="fa-bolt" label="Solicitar Adelanto Ahora" onClick={() => alert('Solicitando...')} />
+          </div>
+        </SocioActionGrid>
+      ) : (
+        <SocioActionGrid>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <SocioActionPill primary icon="fa-file-invoice-dollar" label="Pagar Deudas Pendientes" onClick={() => window.location.href='/dashboard/pagos'} />
+          </div>
+        </SocioActionGrid>
+      )}
+
+      <div style={{ padding: '0 1.25rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+          Beneficios del Express
+        </h3>
+      </div>
+
+      <SocioFinanceCard>
         <div className="socio-movement-list">
-          <div className="socio-movement-item">
-            <div className="socio-movement-icon" style={{ backgroundColor: 'rgba(3,170,229,0.1)', color: 'var(--color-primary)' }}>
-              <i className="fa-solid fa-stopwatch"></i>
-            </div>
-            <div className="socio-movement-content">
-              <p className="socio-movement-title">Aprobación instantánea</p>
-              <p className="socio-movement-date">Sin trámites ni demoras.</p>
-            </div>
-          </div>
-          <div className="socio-movement-item">
-            <div className="socio-movement-icon" style={{ backgroundColor: 'rgba(16,185,129,0.1)', color: 'var(--color-success)' }}>
-              <i className="fa-solid fa-mobile-screen"></i>
-            </div>
-            <div className="socio-movement-content">
-              <p className="socio-movement-title">100% Digital</p>
-              <p className="socio-movement-date">Desde la comodidad de tu celular.</p>
-            </div>
-          </div>
+          <SocioMovementItem 
+            icon="fa-stopwatch"
+            iconColor="primary"
+            title="Aprobación en segundos"
+            date="Sin trámites, 100% automático."
+            amount=""
+          />
+          <SocioMovementItem 
+            icon="fa-mobile-screen"
+            iconColor="success"
+            title="Acreditación Digital"
+            date="Directo a tu caja de ahorro."
+            amount=""
+          />
+          <SocioMovementItem 
+            icon="fa-percent"
+            iconColor="warning"
+            title="Tasa Preferencial"
+            date="Beneficio exclusivo para socios al día."
+            amount=""
+          />
         </div>
-      </SocioSectionCard>
+      </SocioFinanceCard>
     </div>
   );
 };

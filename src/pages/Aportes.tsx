@@ -1,63 +1,67 @@
 import React from 'react';
 import { mockUser, formatCurrency } from '../data/mockData';
 import SocioPageHeader from '../components/socio/SocioPageHeader';
-import SocioSectionCard from '../components/socio/SocioSectionCard';
+import SocioHeroCard from '../components/socio/SocioHeroCard';
+import SocioFinanceCard from '../components/socio/SocioFinanceCard';
 import SocioMovementItem from '../components/socio/SocioMovementItem';
 import SocioStatusBadge from '../components/socio/SocioStatusBadge';
 import SocioEmptyState from '../components/socio/SocioEmptyState';
+import { SocioActionGrid, SocioActionPill } from '../components/socio/SocioActionGrid';
+import SocioInfoRow from '../components/socio/SocioInfoRow';
 
 const Aportes: React.FC = () => {
   const isAtrasado = mockUser.aportesAtrasadosMeses > 0;
 
   return (
-    <div className="socio-page">
+    <div className="socio-app-page">
       <SocioPageHeader 
         title="Mis Aportes" 
-        subtitle="Estado actualizado de tus aportes mensuales" 
+        subtitle="Estado actualizado de tu cuenta capital" 
       />
       
-      <SocioSectionCard>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <SocioHeroCard 
+        label="Aporte Mensual"
+        value={formatCurrency(mockUser.aporteMensual)}
+        gradient={isAtrasado ? 'danger' : 'primary'}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
           <div>
-            <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>Aporte Mensual</p>
-            <p style={{ fontWeight: 700, fontSize: '1.5rem', margin: 0, color: 'var(--color-primary)' }}>
-              {formatCurrency(mockUser.aporteMensual)}
-            </p>
-          </div>
-          <div>
+            <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Estado Actual</p>
             {isAtrasado 
-              ? <SocioStatusBadge type="danger">Atrasado ({mockUser.aportesAtrasadosMeses} meses)</SocioStatusBadge>
-              : <SocioStatusBadge type="success">Al día</SocioStatusBadge>}
-          </div>
-        </div>
-        
-        <div className="socio-grid-2">
-          <div className="socio-data-block">
-            <p>Meses Pagados</p>
-            <p>{mockUser.mesesPagadosAporte}</p>
-          </div>
-          <div className="socio-data-block">
-            <p>Meses Pendientes</p>
-            <p>{mockUser.mesesPendientesAporte}</p>
+              ? <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>Atrasado ({mockUser.aportesAtrasadosMeses} meses)</span>
+              : <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', padding: '0.25rem 0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600 }}>Al Día</span>}
           </div>
           {isAtrasado && (
-            <div className="socio-data-block" style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
-              <p>Deuda por Atraso</p>
-              <p style={{ color: 'var(--color-danger)', fontSize: '1.1rem', fontWeight: 600 }}>
-                {formatCurrency(mockUser.aportesAtrasadosMonto)}
-              </p>
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ margin: '0 0 0.25rem', fontSize: '0.85rem', opacity: 0.9 }}>Deuda</p>
+              <p style={{ margin: 0, fontWeight: 700, fontSize: '1.25rem' }}>{formatCurrency(mockUser.aportesAtrasadosMonto)}</p>
             </div>
           )}
         </div>
-        
-        {isAtrasado && (
-          <div className="mt-4">
-            <button className="socio-cta-btn socio-cta-danger">Regularizar Aporte Online</button>
-          </div>
-        )}
-      </SocioSectionCard>
+      </SocioHeroCard>
 
-      <SocioSectionCard title="Historial de Aportes">
+      <SocioActionGrid>
+        {isAtrasado ? (
+          <SocioActionPill primary icon="fa-credit-card" label="Pagar Deuda" onClick={() => alert('Ir a pago')} />
+        ) : (
+          <SocioActionPill primary icon="fa-credit-card" label="Adelantar Pago" onClick={() => alert('Ir a pago')} />
+        )}
+        <SocioActionPill icon="fa-file-pdf" label="Extracto" onClick={() => alert('Descargar PDF')} />
+      </SocioActionGrid>
+
+      <SocioFinanceCard title="Resumen Anual">
+        <SocioInfoRow label="Meses Pagados" value={mockUser.mesesPagadosAporte} />
+        <SocioInfoRow label="Meses Pendientes" value={mockUser.mesesPendientesAporte} />
+        <SocioInfoRow label="Categoría" value="Socio Activo" />
+      </SocioFinanceCard>
+
+      <div style={{ padding: '0 1.25rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
+          Historial de Movimientos
+        </h3>
+      </div>
+
+      <SocioFinanceCard>
         {mockUser.historialAportes.length > 0 ? (
           <div className="socio-movement-list">
             {mockUser.historialAportes.map(aporte => {
@@ -78,11 +82,11 @@ const Aportes: React.FC = () => {
                   icon="fa-piggy-bank"
                   iconColor={iconColor}
                   title={`Aporte ${aporte.mes}`}
-                  date={aporte.fechaPago || 'Pendiente'}
+                  date={aporte.fechaPago || 'Pendiente de pago'}
                   amount={formatCurrency(aporte.monto)}
-                  rightAddon={
+                  status={
                     <SocioStatusBadge type={badgeType}>
-                      {aporte.estado.charAt(0).toUpperCase() + aporte.estado.slice(1)}
+                      {aporte.estado}
                     </SocioStatusBadge>
                   }
                 />
@@ -92,11 +96,11 @@ const Aportes: React.FC = () => {
         ) : (
           <SocioEmptyState 
             icon="fa-receipt" 
-            title="Aún no hay movimientos" 
-            subtitle="Tus aportes aparecerán aquí una vez registrados." 
+            title="Sin movimientos" 
+            subtitle="Tus aportes pagados aparecerán aquí." 
           />
         )}
-      </SocioSectionCard>
+      </SocioFinanceCard>
     </div>
   );
 };

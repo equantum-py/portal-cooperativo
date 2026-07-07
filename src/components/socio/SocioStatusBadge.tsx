@@ -7,10 +7,10 @@ interface SocioStatusBadgeProps {
 
 const SocioStatusBadge: React.FC<SocioStatusBadgeProps> = ({ type, children }) => {
   const styles = {
-    success: { bg: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-success)' },
-    warning: { bg: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-warning)' },
-    danger: { bg: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-danger)' },
-    info: { bg: 'rgba(3, 170, 229, 0.1)', color: 'var(--color-primary)' }
+    success: { bg: '#dcfce7', color: '#166534' }, // Premium tailwind colors
+    warning: { bg: '#fef3c7', color: '#92400e' },
+    danger: { bg: '#fee2e2', color: '#991b1b' },
+    info: { bg: '#dbeafe', color: '#1e40af' }
   };
 
   return (
