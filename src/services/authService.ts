@@ -98,5 +98,13 @@ export const authService = {
 
   isAuthenticated(): boolean {
     return this.getSession() !== null;
+  },
+
+  isSocio(): boolean {
+    return this.getSession()?.rol === 'socio';
+  },
+
+  isAdmin(): boolean {
+    return this.getSession()?.rol === 'admin';
   }
 };

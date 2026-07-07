@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 
@@ -7,12 +7,6 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Limpiar sesión al entrar a la vista de login para evitar mezcla
-    authService.logout();
-  }, []);
-
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
