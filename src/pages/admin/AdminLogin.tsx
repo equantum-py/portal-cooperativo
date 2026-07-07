@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { demoStore } from '../services/demoStore';
+import { authService } from '../../services/authService';
+import { demoStore } from '../../services/demoStore';
 
 const AdminLogin: React.FC = () => {
   const [usuario, setUsuario] = useState('');
@@ -10,7 +10,6 @@ const AdminLogin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const config = demoStore.getConfiguracion();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
