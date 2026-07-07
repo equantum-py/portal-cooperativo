@@ -51,7 +51,7 @@ const AdminLogin: React.FC = () => {
             <i className="fa-solid fa-shield-halved"></i>
           </div>
           <h1 className="title-lg">Panel Administrativo</h1>
-          <p className="text-muted">Gestión financiera y operativa de la cooperativa.</p>
+          <p className="text-muted">Acceso para responsables de gestión financiera y operativa</p>
         </div>
 
         {error && (

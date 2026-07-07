@@ -39,6 +39,8 @@ El comportamiento de la aplicación está gobernado por el archivo `src/config/a
 - Usuario: `admin`
 - PIN: `1234`
 
+> **Nota:** Actualmente ambos accesos funcionan dentro del mismo proyecto Vercel. En producción se podrán usar subdominios separados, por ejemplo `socios.dominio.com.py` y `admin.dominio.com.py`.
+
 ## Flujo de Datos Reales (Producción)
 
 El flujo real planificado será el siguiente:
