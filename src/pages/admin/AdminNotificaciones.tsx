@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { demoStore } from '../../services/demoStore';
 import { useToast } from '../../context/ToastContext';
 import Badge from '../../components/Badge';
 
 const AdminNotificaciones: React.FC = () => {
-  const [socios, setSocios] = useState(demoStore.getSocios());
+  const [socios] = useState(demoStore.getSocios());
   const [history, setHistory] = useState(demoStore.getAdminNotifications());
   const { showToast } = useToast();
 
@@ -133,8 +133,8 @@ const AdminNotificaciones: React.FC = () => {
                     <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>{notif.mensaje}</p>
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <Badge type={notif.tipo}>{notif.tipo}</Badge>
-                      <Badge type="default"><i className="fa-solid fa-tower-broadcast" style={{ marginRight: '4px' }}></i>{notif.canal}</Badge>
-                      <Badge type="default"><i className="fa-solid fa-users" style={{ marginRight: '4px' }}></i>{
+                      <Badge type="info"><i className="fa-solid fa-tower-broadcast" style={{ marginRight: '4px' }}></i>{notif.canal}</Badge>
+                      <Badge type="info"><i className="fa-solid fa-users" style={{ marginRight: '4px' }}></i>{
                         notif.destinatario === 'todos' ? 'Todos' :
                         notif.destinatario === 'atrasados' ? 'Atrasados' :
                         notif.destinatario === 'activos' ? 'Activos' : 'Socio Específico'
