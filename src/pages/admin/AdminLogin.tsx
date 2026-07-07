@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/authService';
+import AuthLayout from '../../components/auth/AuthLayout';
 
 const AdminLogin: React.FC = () => {
   const [usuario, setUsuario] = useState('');
@@ -8,6 +9,10 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    authService.logout();
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,57 +43,66 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="auth-wrapper" style={{ backgroundColor: 'var(--color-bg)' }}>
-      <div className="auth-card" style={{ borderTop: '5px solid var(--color-primary)' }}>
-        <div className="brand-logo text-center mb-4">
-          <div className="brand-icon" style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}>
-            <i className="fa-solid fa-shield-halved"></i>
-          </div>
-          <h1 className="title-lg">Panel Administrativo</h1>
-          <p className="text-muted">Acceso para responsables de gestión financiera y operativa</p>
+    <AuthLayout type="admin">
+      <div className="auth-brand-icon" style={{ background: 'var(--color-primary)' }}>
+        <i className="fa-solid fa-shield-halved"></i>
+      </div>
+      <h1 className="auth-title">Panel Administrativo</h1>
+      <p className="auth-subtitle">Gestión financiera y operativa de la cooperativa.</p>
+
+      {error && (
+        <div style={{ backgroundColor: 'var(--color-danger)', color: 'var(--color-white)', padding: '0.75rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+          {error}
         </div>
+      )}
 
-        {error && (
-          <div style={{ backgroundColor: 'var(--color-danger)', color: 'var(--color-white)', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginBottom: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} noValidate>
-          <div className="form-group">
-            <label className="form-label">Usuario o Cédula Administrativa</label>
+      <form onSubmit={handleLogin} noValidate>
+        <div className="auth-input-group">
+          <label className="auth-input-label">Usuario o Cédula Administrativa</label>
+          <div style={{ position: 'relative' }}>
             <input 
               type="text" 
-              className="form-control" 
+              className="auth-input" 
               placeholder="Ej: admin" 
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
+              style={{ paddingLeft: '2.5rem' }}
             />
+            <i className="fa-regular fa-user" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#94A3B8' }}></i>
           </div>
-          <div className="form-group">
-            <label className="form-label">Contraseña o PIN</label>
+        </div>
+        
+        <div className="auth-input-group">
+          <label className="auth-input-label">Contraseña o PIN</label>
+          <div style={{ position: 'relative' }}>
             <input 
               type="password" 
-              className="form-control" 
+              className="auth-input" 
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ paddingLeft: '2.5rem' }}
             />
+            <i className="fa-solid fa-lock" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#94A3B8' }}></i>
           </div>
-          <button type="submit" className="btn btn-primary mt-2" disabled={loading} style={{ width: '100%' }}>
-            {loading ? 'Verificando...' : 'Ingresar al panel'}
-          </button>
-        </form>
-
-        <div className="text-center mt-4">
-          <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', marginBottom: '1rem' }} />
-          <Link to="/login" style={{ fontSize: '0.9rem', color: 'var(--color-text-light)', textDecoration: 'none' }}>
-            <i className="fa-solid fa-arrow-left" style={{ marginRight: '0.5rem' }}></i>
-            Volver al portal del socio
-          </Link>
         </div>
+
+        <button type="submit" className="auth-button" disabled={loading}>
+          {loading ? 'Verificando...' : 'Ingresar al panel'}
+        </button>
+      </form>
+
+      <div className="text-center mt-4">
+        <hr style={{ border: 0, borderTop: '1px solid #E2E8F0', margin: '1.5rem 0' }} />
+        <Link to="/login" className="auth-link">
+          <i className="fa-solid fa-arrow-left"></i> Volver al portal del socio
+        </Link>
       </div>
-    </div>
+
+      <div className="auth-security-text">
+        <i className="fa-solid fa-server"></i> Acceso exclusivo para responsables autorizados
+      </div>
+    </AuthLayout>
   );
 };
 

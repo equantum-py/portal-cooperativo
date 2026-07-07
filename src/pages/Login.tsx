@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
+import AuthLayout from '../components/auth/AuthLayout';
 
 const Login: React.FC = () => {
   const [cedula, setCedula] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    authService.logout();
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,45 +42,49 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="auth-wrapper">
-      <div className="auth-card">
-        <div className="brand-logo text-center mb-4">
-          <div className="brand-icon">
-            <i className="fa-solid fa-building-columns"></i>
-          </div>
-          <h1 className="title-lg">Portal de Socios</h1>
-          <p className="text-muted">Acceso para socios de la cooperativa</p>
-        </div>
-
-        {error && (
-          <div style={{ backgroundColor: 'var(--color-danger)', color: 'var(--color-white)', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginBottom: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} noValidate>
-          <div className="form-group">
-            <label className="form-label">Número de Cédula</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              placeholder="Ej: 1234567" 
-              value={cedula}
-              onChange={(e) => setCedula(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary mt-2" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
-          </button>
-        </form>
-
-        <div className="text-center mt-4">
-          <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', marginBottom: '1rem' }} />
-          <p className="text-muted mb-2">¿Aún no sos parte?</p>
-          <Link to="/register" className="btn btn-outline" style={{ display: 'block' }}>Quiero ser socio</Link>
-        </div>
+    <AuthLayout type="socio">
+      <div className="auth-brand-icon">
+        <i className="fa-solid fa-building-columns"></i>
       </div>
-    </div>
+      <h1 className="auth-title">Portal de Socios</h1>
+      <p className="auth-subtitle">Consultá tus aportes, préstamos y beneficios desde tu celular.</p>
+
+      {error && (
+        <div style={{ backgroundColor: 'var(--color-danger)', color: 'var(--color-white)', padding: '0.75rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleLogin} noValidate>
+        <div className="auth-input-group">
+          <label className="auth-input-label">Número de Cédula</label>
+          <input 
+            type="text" 
+            className="auth-input" 
+            placeholder="Ej: 1234567" 
+            value={cedula}
+            onChange={(e) => setCedula(e.target.value)}
+          />
+        </div>
+        
+        <button type="submit" className="auth-button" disabled={loading}>
+          {loading ? 'Ingresando...' : 'Ingresar'}
+          {!loading && <i className="fa-solid fa-arrow-right"></i>}
+        </button>
+      </form>
+
+      <div className="text-center mt-4">
+        <hr style={{ border: 0, borderTop: '1px solid #E2E8F0', margin: '1.5rem 0' }} />
+        <p className="text-muted mb-2">¿Aún no sos parte?</p>
+        <Link to="/register" className="auth-link">
+          Quiero ser socio <i className="fa-solid fa-chevron-right" style={{ fontSize: '0.8rem' }}></i>
+        </Link>
+      </div>
+
+      <div className="auth-security-text">
+        <i className="fa-solid fa-shield-halved"></i> Acceso seguro para socios registrados
+      </div>
+    </AuthLayout>
   );
 };
 
