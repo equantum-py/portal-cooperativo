@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/authService';
-import { demoStore } from '../../services/demoStore';
 
 const AdminLogin: React.FC = () => {
   const [usuario, setUsuario] = useState('');
