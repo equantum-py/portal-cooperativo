@@ -67,6 +67,14 @@ a:hover {
 }
 
 /* Utilities */
+.desktop-only { display: none !important; }
+.mobile-only { display: block !important; }
+@media (min-width: 769px) {
+  .desktop-only { display: block !important; }
+  .mobile-only { display: none !important; }
+  aside.socio-sidebar { display: flex !important; }
+}
+
 .text-center { text-align: center; }
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -389,3 +397,198 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   .title-lg { font-size: 1.5rem; }
   .title-md { font-size: 1.15rem; }
 }
+
+/* --- SOCIO APP DESIGN (Mobile First) --- */
+.socio-mobile-shell {
+  padding-bottom: 80px; /* Space for bottom nav */
+}
+
+@media (min-width: 769px) {
+  .socio-mobile-shell {
+    padding-bottom: 0;
+  }
+}
+
+.socio-app-header {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #05102a 100%);
+  color: var(--color-white);
+  padding: 1.5rem 1.5rem 2.5rem;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(10, 32, 83, 0.15);
+  margin-bottom: -1.5rem; /* Overlap with content below */
+}
+
+.socio-app-header-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.socio-app-header-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.socio-app-header-avatar {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.socio-balance-card {
+  background: linear-gradient(135deg, #03AAE5 0%, #0088BC 100%);
+  border-radius: 20px;
+  padding: 1.75rem;
+  color: white;
+  box-shadow: 0 10px 25px -5px rgba(3, 170, 229, 0.4);
+  position: relative;
+  z-index: 10;
+  margin: 0 1rem 1.5rem;
+  animation: fadeSlideUp 0.5s ease-out forwards;
+}
+
+.socio-balance-title {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.socio-balance-amount {
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.socio-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  padding: 0 1rem 1.5rem;
+}
+
+@media (max-width: 400px) {
+  .socio-quick-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.socio-qa-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.socio-qa-btn:active {
+  transform: scale(0.95);
+}
+
+.socio-qa-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  background-color: var(--color-white);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.socio-qa-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.socio-mobile-card {
+  background-color: var(--color-white);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin: 0 1rem 1.25rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.socio-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.75rem 0.5rem calc(0.75rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  z-index: 100;
+  border-top: 1px solid rgba(0,0,0,0.03);
+}
+
+.socio-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  padding: 0.25rem 0.5rem;
+}
+
+.socio-bottom-nav-item i {
+  font-size: 1.25rem;
+  margin-bottom: 0.35rem;
+  transition: transform 0.2s;
+}
+
+.socio-bottom-nav-item.active {
+  color: var(--color-secondary);
+}
+
+.socio-bottom-nav-item.active i {
+  transform: translateY(-2px);
+}
+
+.socio-desktop-content {
+  padding: 0 1rem;
+}
+@media (min-width: 769px) {
+  .socio-desktop-content {
+    padding: 0;
+  }
+  .socio-balance-card, .socio-mobile-card {
+    margin: 0 0 1.5rem 0;
+  }
+  .socio-quick-actions {
+    padding: 0 0 1.5rem 0;
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+

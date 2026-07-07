@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { demoStore } from '../services/demoStore';
+import MobileBottomNav from '../components/socio/MobileBottomNav';
 
 const PrivateLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +23,7 @@ const PrivateLayout: React.FC = () => {
   const headerName = isAdmin ? config.nombreAdmin : (session?.nombre || 'Juan Pérez');
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className={!isAdmin ? "socio-mobile-shell" : ""} style={{ display: 'flex', minHeight: '100vh' }}>
       
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -37,9 +38,10 @@ const PrivateLayout: React.FC = () => {
 
       {/* Sidebar - Estilo Clay */}
       <aside 
+        className={!isAdmin ? "socio-sidebar desktop-only" : ""}
         style={{
           width: '260px', backgroundColor: 'var(--color-white)',
-          boxShadow: '4px 0 15px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column',
+          boxShadow: '4px 0 15px rgba(0,0,0,0.03)', display: !isAdmin ? 'none' : 'flex', flexDirection: 'column',
           position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 100,
           transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           transform: window.innerWidth <= 768 && !sidebarOpen ? 'translateX(-100%)' : 'translateX(0)',
@@ -106,14 +108,15 @@ const PrivateLayout: React.FC = () => {
       <main style={{ 
         flex: 1, 
         marginLeft: window.innerWidth > 768 ? '260px' : '0', 
-        padding: window.innerWidth > 768 ? '2.5rem' : '1rem',
-        paddingTop: window.innerWidth > 768 ? '2.5rem' : '5rem',
+        padding: window.innerWidth > 768 ? '2.5rem' : (!isAdmin ? '0' : '1rem'),
+        paddingTop: window.innerWidth > 768 ? '2.5rem' : (!isAdmin ? '0' : '5rem'),
         transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        width: '100%'
+        width: '100%',
+        overflowX: 'hidden'
       }}>
         
         {/* Mobile Topbar - Estilo clay */}
-        <div style={{ 
+        <div className={!isAdmin ? "desktop-only" : ""} style={{ 
           display: window.innerWidth <= 768 ? 'flex' : 'none', 
           alignItems: 'center', justifyContent: 'space-between',
           backgroundColor: 'var(--color-white)', padding: '1rem',
@@ -127,9 +130,15 @@ const PrivateLayout: React.FC = () => {
         </div>
 
         {/* Dynamic Route Content */}
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={!isAdmin ? { width: '100%' } : { maxWidth: '1000px', margin: '0 auto' }}>
           <Outlet />
         </div>
+        
+        {!isAdmin && (
+          <div className="mobile-only">
+            <MobileBottomNav />
+          </div>
+        )}
 
       </main>
     </div>
