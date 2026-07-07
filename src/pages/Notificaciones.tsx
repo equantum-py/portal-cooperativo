@@ -39,7 +39,7 @@ const Notificaciones: React.FC = () => {
         ))}
       </div>
       
-      <div style={{ padding: '0 1.25rem' }}>
+      <div className="socio-section-title-wrapper">
         {notificaciones.length === 0 ? (
           <SocioEmptyState 
             icon="fa-bell-slash" 
@@ -71,7 +71,7 @@ const Notificaciones: React.FC = () => {
             }
 
             return (
-              <div key={notif.id} className="socio-finance-card" style={{ padding: '1.25rem', marginBottom: '1rem', position: 'relative', margin: '0 0 1rem 0' }}>
+              <div key={notif.id} className="socio-finance-card" style={{ position: 'relative', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <div style={{ 
                     fontSize: '1.25rem', color: iconColor, marginRight: '1rem', 

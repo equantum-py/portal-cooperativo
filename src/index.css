@@ -160,7 +160,7 @@ h1, h2, h3, h4 {
 
 /* Auth Layout - Premium Fintech Redesign */
 .auth-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -400,7 +400,10 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 
 /* --- SOCIO APP DESIGN (Mobile First) --- */
 .socio-mobile-shell {
-  padding-bottom: 80px; /* Space for bottom nav */
+  /* Removed fixed padding-bottom, handled by socio-app-page */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 769px) {
@@ -577,7 +580,9 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 }
 
 .socio-desktop-content {
-  padding: 0 1rem;
+  padding: 0 clamp(16px, 4vw, 24px);
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  min-height: 100dvh;
 }
 @media (min-width: 769px) {
   .socio-desktop-content {
@@ -595,20 +600,26 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 /* --- PREMIUM SOCIO APP FINTECH REDESIGN --- */
 
 .socio-app-page {
-  padding-bottom: 5rem; /* Space for bottom nav */
+  padding-bottom: calc(110px + env(safe-area-inset-bottom)); /* Generous space for bottom nav + safe area */
   background-color: #F8FAFC; /* Light gray background for the app shell */
-  min-height: 100vh;
+  min-height: 100dvh;
   animation: fadeSlideUp 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Page Header with curved bottom or clean separation */
 .socio-page-header {
-  padding: 1.5rem 1.5rem 2rem;
+  padding: clamp(1.25rem, 5vw, 1.5rem) clamp(16px, 5vw, 24px) 2rem;
   background: var(--color-white);
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.02);
   margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .socio-page-header.dark {
@@ -617,7 +628,7 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 }
 
 .socio-page-title {
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 6vw, 1.5rem);
   font-weight: 800;
   margin: 0;
   letter-spacing: -0.5px;
@@ -631,9 +642,13 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   line-height: 1.4;
 }
 
+.socio-section-title-wrapper {
+  padding: 0 clamp(16px, 4vw, 24px);
+}
+
 /* Hero Cards */
 .socio-hero-wrapper {
-  padding: 0 1.25rem;
+  padding: 0 clamp(16px, 5vw, 24px);
   margin-top: -1.5rem; /* Overlap with header */
   position: relative;
   z-index: 10;
@@ -642,11 +657,13 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 
 .socio-hero-card {
   border-radius: 24px;
-  padding: 1.75rem;
+  padding: clamp(1.25rem, 5vw, 1.75rem);
   color: white;
   position: relative;
   overflow: hidden;
   box-shadow: 0 12px 30px -10px rgba(0,0,0,0.2);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .socio-hero-card::after {
@@ -674,20 +691,23 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 }
 
 .socio-hero-value {
-  font-size: 2.25rem;
+  font-size: clamp(1.75rem, 8vw, 2.25rem);
   font-weight: 800;
   margin: 0 0 0.5rem 0;
   letter-spacing: -1px;
+  line-height: 1.1;
+  word-break: break-word;
 }
 
 /* Standard Finance Card */
 .socio-finance-card {
   background-color: var(--color-white);
   border-radius: 20px;
-  padding: 1.5rem;
-  margin: 0 1.25rem 1.25rem;
+  padding: clamp(1.25rem, 4vw, 1.5rem);
+  margin: 0 clamp(16px, 4vw, 1.25rem) 1.25rem;
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   border: 1px solid rgba(0,0,0,0.02);
+  box-sizing: border-box;
 }
 
 .socio-finance-card-title {
@@ -773,8 +793,9 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
 }
 .socio-movement-amount {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 4vw, 1.05rem);
   margin: 0 0 0.2rem 0;
+  white-space: nowrap;
 }
 
 /* Action Grid (Horizontal scrollable or grid) */
@@ -782,7 +803,7 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  padding: 0 1.25rem 1.25rem;
+  padding: 0 clamp(16px, 4vw, 1.25rem) 1.25rem;
 }
 
 .socio-action-pill {
@@ -848,7 +869,7 @@ td { border-bottom: 1px solid rgba(0,0,0,0.03) !important; padding: 12px 10px !i
   display: flex;
   gap: 0.75rem;
   overflow-x: auto;
-  padding: 0 1.25rem 1rem;
+  padding: 0 clamp(16px, 4vw, 24px) 1rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }

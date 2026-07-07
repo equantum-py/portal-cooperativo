@@ -41,7 +41,7 @@ const Pagos: React.FC = () => {
         <SocioActionPill icon="fa-file-pdf" label="Extracto" onClick={() => alert('Extracto')} />
       </SocioActionGrid>
 
-      <div style={{ padding: '0 1.25rem' }}>
+      <div className="socio-section-title-wrapper">
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: '1rem', marginTop: '1rem' }}>
           Detalle de Deuda
         </h3>

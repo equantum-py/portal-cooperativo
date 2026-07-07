@@ -23,7 +23,7 @@ const PrivateLayout: React.FC = () => {
   const headerName = isAdmin ? config.nombreAdmin : (session?.nombre || 'Juan Pérez');
 
   return (
-    <div className={!isAdmin ? "socio-mobile-shell" : ""} style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className={!isAdmin ? "socio-mobile-shell" : ""} style={{ display: 'flex', minHeight: '100dvh' }}>
       
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -130,7 +130,7 @@ const PrivateLayout: React.FC = () => {
         </div>
 
         {/* Dynamic Route Content */}
-        <div style={!isAdmin ? { width: '100%' } : { maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={!isAdmin ? { width: '100%', maxWidth: '600px', margin: '0 auto' } : { maxWidth: '1000px', margin: '0 auto' }}>
           <Outlet />
         </div>
         
