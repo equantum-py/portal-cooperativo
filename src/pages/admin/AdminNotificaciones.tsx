@@ -19,14 +19,10 @@ const AdminNotificaciones: React.FC = () => {
 
   const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
-    if (val === 'aporte_mensual') {
-      setForm({ ...form, tipo: 'info', titulo: 'Recordatorio de Aporte', mensaje: 'Se acerca la fecha de pago de tu aporte mensual.' });
-    } else if (val === 'aporte_atrasado') {
-      setForm({ ...form, tipo: 'danger', titulo: 'Aportes Atrasados', mensaje: 'Tenés aportes pendientes. Te recomendamos regularizar tu situación.' });
-    } else if (val === 'prestamo_atrasado') {
-      setForm({ ...form, tipo: 'danger', titulo: 'Cuota Vencida', mensaje: 'Tu cuota de préstamo se encuentra vencida. Por favor regularizá el pago.' });
-    } else if (val === 'prestamo_express') {
-      setForm({ ...form, tipo: 'success', titulo: 'Préstamo Express Disponible', mensaje: 'Calificás para un préstamo express. Solicitalo desde la app.' });
+    const plantillas = demoStore.getPlantillas();
+    const p = plantillas.find(x => x.id === val);
+    if (p) {
+      setForm({ ...form, tipo: p.tipo, titulo: p.titulo, mensaje: p.mensaje });
     }
   };
 
@@ -74,10 +70,9 @@ const AdminNotificaciones: React.FC = () => {
               <label className="form-label">Usar Plantilla Rápida</label>
               <select className="form-control" onChange={handleTemplateChange} defaultValue="">
                 <option value="" disabled>Seleccioná una plantilla (Opcional)</option>
-                <option value="aporte_mensual">Aviso de aporte mensual próximo</option>
-                <option value="aporte_atrasado">Aviso de aporte atrasado</option>
-                <option value="prestamo_atrasado">Aviso de préstamo vencido</option>
-                <option value="prestamo_express">Oferta de Préstamo Express</option>
+                {demoStore.getPlantillas().map(p => (
+                  <option key={p.id} value={p.id}>{p.nombre}</option>
+                ))}
               </select>
             </div>
 

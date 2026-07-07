@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { appConfig } from '../config/appConfig';
+import { demoStore } from '../services/demoStore';
 
 const Login: React.FC = () => {
   const [cedula, setCedula] = useState('');
@@ -9,6 +9,8 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const config = demoStore.getConfiguracion();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,8 +52,8 @@ const Login: React.FC = () => {
           <div className="brand-icon">
             <i className="fa-solid fa-building-columns"></i>
           </div>
-          <h1 className="title-lg">{appConfig.nombreInstitucion}</h1>
-          <p className="text-muted">Portal de Socios</p>
+          <h1 className="title-lg">{config.nombrePortal}</h1>
+          <p className="text-muted">{config.nombreCooperativa}</p>
         </div>
 
         {error && (

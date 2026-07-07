@@ -17,7 +17,8 @@ const PrivateLayout: React.FC = () => {
   const closeSidebar = () => setSidebarOpen(false);
 
   const isAdmin = session?.rol === 'admin';
-  const headerName = isAdmin ? 'Administrador Principal' : (session?.nombre || 'Juan Pérez');
+  const config = demoStore.getConfiguracion();
+  const headerName = isAdmin ? config.nombreAdmin : (session?.nombre || 'Juan Pérez');
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
@@ -50,7 +51,7 @@ const PrivateLayout: React.FC = () => {
               <i className="fa-solid fa-building-columns"></i>
             </div>
             <div>
-              <h2 className="title-md" style={{ margin: 0, fontSize: '1.1rem' }}>{appConfig.nombreInstitucion}</h2>
+              <h2 className="title-md" style={{ margin: 0, fontSize: '1.1rem' }}>{config.nombrePortal}</h2>
               <p className="text-muted" style={{ fontSize: '0.8rem', margin: 0, fontWeight: isAdmin ? 600 : 400, color: isAdmin ? 'var(--color-primary)' : '' }}>{headerName}</p>
             </div>
           </div>
@@ -120,7 +121,7 @@ const PrivateLayout: React.FC = () => {
           <button onClick={() => setSidebarOpen(true)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', color: 'var(--color-primary)', cursor: 'pointer', padding: '0.5rem', borderRadius: '12px' }}>
             <i className="fa-solid fa-bars"></i>
           </button>
-          <h2 className="title-md" style={{ margin: 0, fontSize: '1.1rem' }}>{appConfig.nombreInstitucion}</h2>
+          <h2 className="title-md" style={{ margin: 0, fontSize: '1.1rem' }}>{config.nombrePortal}</h2>
           <div style={{ width: 40 }}></div>
         </div>
 

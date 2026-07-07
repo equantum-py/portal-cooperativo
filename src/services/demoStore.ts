@@ -139,5 +139,51 @@ export const demoStore = {
 
   saveSolicitudes: (solicitudes: SolicitudAdmin[]) => {
     localStorage.setItem('demoSolicitudes', JSON.stringify(solicitudes));
+  },
+
+  getConfiguracion: () => {
+    const data = localStorage.getItem('demoConfiguracion');
+    if (data) return JSON.parse(data);
+    const defaultConfig = {
+      nombreCooperativa: 'Cooperativa Equantum Ltda.',
+      nombrePortal: 'Portal Equantum',
+      telefono: '021 123 4567',
+      email: 'contacto@equantum.com.py',
+      whatsapp: '0981 123 456',
+      direccion: 'Av. Mariscal López 1234',
+      ciudad: 'Asunción',
+      montoAporteDefecto: 100000,
+      diaVencimientoAporte: 10,
+      moneda: 'Gs.',
+      interesDemo: 20,
+      maxCuotas: 36,
+      nombreAdmin: 'Administrador Principal'
+    };
+    localStorage.setItem('demoConfiguracion', JSON.stringify(defaultConfig));
+    return defaultConfig;
+  },
+
+  saveConfiguracion: (config: any) => {
+    localStorage.setItem('demoConfiguracion', JSON.stringify(config));
+  },
+
+  getPlantillas: () => {
+    const data = localStorage.getItem('demoPlantillas');
+    if (data) return JSON.parse(data);
+    const defaultTemplates = [
+      { id: 'aporte_mensual', nombre: 'Aviso de aporte mensual', titulo: 'Recordatorio de Aporte', mensaje: 'Recordá que tu aporte de este mes vence pronto.', tipo: 'info' },
+      { id: 'aporte_atrasado', nombre: 'Aviso de aporte atrasado', titulo: 'Aporte Atrasado', mensaje: 'Tenés aportes pendientes. Regularizá tu situación.', tipo: 'danger' },
+      { id: 'prestamo_vencido', nombre: 'Aviso de préstamo vencido', titulo: 'Próximo Vencimiento', mensaje: 'Tu cuota de préstamo vence en breve.', tipo: 'warning' },
+      { id: 'mora', nombre: 'Aviso de mora', titulo: 'Aviso de Mora', mensaje: 'Tu préstamo registra mora. Evitá recargos pagando a tiempo.', tipo: 'danger' },
+      { id: 'oferta_prestamo', nombre: 'Oferta de préstamo', titulo: '¡Préstamo Pre-aprobado!', mensaje: 'Calificás para un préstamo express con tasas preferenciales.', tipo: 'success' },
+      { id: 'reunion', nombre: 'Reunión de socios', titulo: 'Asamblea Ordinaria', mensaje: 'Te invitamos a la próxima asamblea de socios.', tipo: 'info' },
+      { id: 'general', nombre: 'Aviso general', titulo: 'Aviso Institucional', mensaje: 'Comunicado general para todos los socios de la cooperativa.', tipo: 'info' }
+    ];
+    localStorage.setItem('demoPlantillas', JSON.stringify(defaultTemplates));
+    return defaultTemplates;
+  },
+
+  savePlantillas: (plantillas: any[]) => {
+    localStorage.setItem('demoPlantillas', JSON.stringify(plantillas));
   }
 };

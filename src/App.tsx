@@ -23,6 +23,7 @@ import AdminCuotasVencidas from './pages/admin/AdminCuotasVencidas';
 import AdminPagos from './pages/admin/AdminPagos';
 import AdminAhorros from './pages/admin/AdminAhorros';
 import AdminSolicitudes from './pages/admin/AdminSolicitudes';
+import AdminConfiguracion from './pages/admin/AdminConfiguracion';
 import PlaceholderView from './pages/admin/PlaceholderView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
@@ -68,7 +69,7 @@ function App() {
               <Route path="admin/reportes" element={<AdminReportes />} />
               <Route path="admin/notificaciones" element={<AdminNotificaciones />} />
               <Route path="admin/importar-exportar" element={<AdminImportExport />} />
-              <Route path="admin/configuracion" element={<PlaceholderView title="Configuración del Sistema" />} />
+              <Route path="admin/configuracion" element={<AdminConfiguracion />} />
             </Route>
           </Route>
         </Route>
