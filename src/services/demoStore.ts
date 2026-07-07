@@ -1,4 +1,4 @@
-import { mockSociosList, Socio, Notificacion, PagoAdmin, SolicitudAdmin, mockPagosList, mockSolicitudesList } from '../data/mockData';
+import { mockSociosList, Socio, PagoAdmin, SolicitudAdmin, mockPagosList, mockSolicitudesList } from '../data/mockData';
 
 const STORAGE_KEY = 'portal_cooperativo_socios';
 
